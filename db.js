@@ -3,7 +3,7 @@ var connection = mysql.createPool({
     host     : 'localhost',
     user     : 'root',
     password : '',
-    database : 'picolar'
+    database : 'dbv2'
 });
 
 

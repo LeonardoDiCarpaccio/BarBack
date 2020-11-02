@@ -31,7 +31,8 @@ app.use(slug +'/users', UsersController);
 var questionController = require('./questions/questionController')
 app.use(slug + '/question', questionController);
 
-
+var vinscontroller = require('./vins/vinsController')
+app.use(slug + '/vins',vinscontroller)
 
 
 module.exports = app;
