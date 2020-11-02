@@ -16,4 +16,16 @@ router.post("/getVins",function(req,res){
     })
 })
 
+router.post("/addhisto",function(req,res){
+    Vins.AddToHisto(req,function(err,rows){
+        if(err){
+
+            console.log("from controller"+err)
+        }
+        else{
+            res.json(rows)
+        }
+    })
+})
+
 module.exports = router
