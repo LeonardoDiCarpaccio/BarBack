@@ -40,21 +40,22 @@ var updating=[]
 
 if(body.update!=="undefinded"){
 
-    body.update.forEach((el)=>{
-               const tempo = "('"+el.nom+"',"+el.qte+","+el.prix+","+el.total+",'"+el.nom_prenom+"','"+el.email+"','"+dateNow()+"','"+el.phone+"','"+el.adresse+"')"
-              updating.push(tempo)
-})
-
+//     body.update.forEach((el)=>{
+//                const tempo = "('"+el.nom+"',"+el.qte+","+el.prix+","+el.total+",'"+el.nom_prenom+"','"+el.email+"','"+dateNow()+"','"+el.phone+"','"+el.adresse+"')"
+//               updating.push(tempo)
+// })
+(typeof(body.update)!=="undefined") ? 
+   (Array.isArray(body.update))? body.update.forEach((el)=>{
+       const tempo = "('"+el.nom+"',"+el.qte+","+el.prix+","+el.total+",'"+el.nom_prenom+"','"+el.email+"','"+dateNow()+"','"+el.phone+"','"+el.adresse+"')"
+       updating.push(tempo)
+   }) : updating=body.update : null
 }
 else{
     callback(err,"mauvais body le sang")
 }
-
+console.log("INSERT INTO historique (nom,qte,prix,total,nom_prenom,email,date,phone,adresse) VALUES "+updating.join(",")+";")
     return updating.length>1 ? db.query("INSERT INTO historique (nom,qte,prix,total,nom_prenom,email,date,phone,adresse) VALUES "+updating.join(",")+";",callback)
    :  db.query("INSERT INTO historique (nom,qte,prix,total,nom_prenom,email,date,phone,adresse) VALUES "+updating[0],callback)
-
-
-
 
 //     (typeof(body.update)!=="undefined") ? 
 //    (Array.isArray(body.update))? body.update.forEach((el)=>{
