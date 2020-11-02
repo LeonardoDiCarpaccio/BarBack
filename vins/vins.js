@@ -18,7 +18,7 @@ return db.query("SELECT * FROM vins",function(err,wine){
           array : []
       }
         res.push(response)
-            res[i].array.push({nom : element.vin_nom1,prix : element.prix1},{nom : element.vin_nom2,prix : element.prix2},{nom : element.vin_nom3,prix : element.prix3})
+            res[i].array.push({nom : element.vin_nom1,prix : element.prix1,qte : 0},{nom : element.vin_nom2,prix : element.prix2,qte : 0},{nom : element.vin_nom3,prix : element.prix3,qte : 0})
             i++
     })
             
