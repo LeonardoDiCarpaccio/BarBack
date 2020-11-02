@@ -3,23 +3,23 @@ var router = express.Router();
 var bodyParser = require("body-parser");
 router.use(bodyParser.urlencoded({ extended: false }));
 router.use(bodyParser.json());
-var Question = require("./question")
+var mail = require("./mail")
+var nodemailer = require('nodemailer')
 
 
 
 
-router.get("/getquestion/:theme",function (req, res) {
+router.post("/sendmail",function (req, res) {
 
-    Question.getQuestion(req, function(err, rows) {
+    mail.sendMail(req, function(err, rows) {
 
         if(err) {
             res.status(400).json(err);
+            console.log("erreur", err);
         }
         else{
-            var send = Object.values(JSON.parse(JSON.stringify(rows)));
-            console.log("rows",rows);
-            console.log("send", send[0]);
-            res.send(send[0]);
+            console.log('pas erreur');
+            res.json(rows)
         } 
     })
 

@@ -2,6 +2,7 @@ var express = require('express');
 var app = express();
 const cors = require('cors');
 var bodyParser = require('body-parser');
+
 app.use(cors()); 
 app.use(function(req, res, next) {
   res.header("Access-Control-Allow-Origin", "*");
@@ -28,8 +29,8 @@ app.use(slug +'/auth', AuthController);
 var UsersController = require('./users/UsersController')
 app.use(slug +'/users', UsersController);
 
-var questionController = require('./questions/questionController')
-app.use(slug + '/question', questionController);
+var mailController = require('./mails/mailController')
+app.use(slug + '/mails', mailController);
 
 var vinscontroller = require('./vins/vinsController')
 app.use(slug + '/vins',vinscontroller)
