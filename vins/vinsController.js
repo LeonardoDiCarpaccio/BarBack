@@ -12,6 +12,7 @@ router.post("/getVins",function(req,res){
         }
         else{
             res.json(rows)
+            console.log('getVins done')
         }
     })
 })
@@ -28,4 +29,10 @@ router.post("/addhisto",function(req,res){
     })
 })
 
+router.get("/testing",function(req,res){
+
+            console.log('it is working');
+            res.send('it is working well');
+ 
+})
 module.exports = router
