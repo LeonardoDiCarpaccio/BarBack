@@ -31,7 +31,9 @@
     "mkdirp": "^1.0.4",
     "mysql": "^2.18.1",
     "nodemailer": "^6.4.14",
-    "nodemon": "^2.0.4",
     "stripe": "^8.91.0"
+  },
+  "devDependencies": {
+    "nodemon": "^2.0.6"
   }
 }
