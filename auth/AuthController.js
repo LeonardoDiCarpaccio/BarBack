@@ -42,6 +42,16 @@ var VerifyToken = require("./VerifyToken");
 //     return res.status(200).send(userInfo);  // { auth: true, token: token }
 //   });
 // });
+router.post("/connect",function(req,res){
+  Auth.connect(req,function(err,row){
+    if(err){
+      console.log(err)
+    }
+    else{
+      res.json(row)
+    }
+  })
+})
 
 
 router.post("/login", function (req , res) {

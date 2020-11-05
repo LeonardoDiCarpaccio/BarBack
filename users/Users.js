@@ -4,6 +4,8 @@ var bcrypt = require('bcryptjs');
 
 var Users = {
 
+
+  
   getUsers : function(req,callback){
 
     var body = req.body;

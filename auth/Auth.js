@@ -3,6 +3,16 @@ var db = require("../db");
 
 var Auth = {
 
+
+connect : function(req,callback){
+
+
+var body=req.body
+console.log()
+db.query("SELECT * FROM user WHERE pseudo = '"+body.pseudo+"' AND password = '"+body.password+"'",callback)
+
+},
+
 login : function(req,callback){
 
     var body = req.body;
