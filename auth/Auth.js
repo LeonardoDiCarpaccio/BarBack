@@ -1,3 +1,4 @@
+const { response } = require("express");
 var db = require("../db");
 
 
@@ -11,6 +12,19 @@ var body=req.body
 console.log()
 db.query("SELECT * FROM user WHERE pseudo = '"+body.pseudo+"' AND password = '"+body.password+"'",callback)
 
+},
+
+truelogin: function(req,callback){
+    var body = req.body
+    db.query("SELECT * FROM user WHERE pseudo = '"+body.pseudo+"' AND password = '"+body.password+"'",function(err,infouser){
+        if(err){
+            callback(err,"wrong pseudo")
+        }
+
+        else{
+            callback(null,infouser)
+        }})
+        
 },
 
 login : function(req,callback){
@@ -32,6 +46,12 @@ login : function(req,callback){
  
 
 },
+
+
+
 };
+
+
+
 
 module.exports = Auth;

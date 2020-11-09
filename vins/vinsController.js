@@ -35,4 +35,15 @@ router.get("/testing",function(req,res){
             res.send('it is working well');
  
 })
+router.post("/gethisto",function(req,res){
+    Vins.getHistoCommande(req,function(err,rows){
+        if(err){
+            console.log(err)
+        }
+
+        else {
+            res.json(rows)
+        }
+    })
+})
 module.exports = router

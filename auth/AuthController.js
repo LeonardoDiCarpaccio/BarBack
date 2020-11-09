@@ -53,6 +53,21 @@ router.post("/connect",function(req,res){
   })
 })
 
+router.post("/truelogin",function(req,res){
+  Auth.truelogin(req,function(err,rows){
+    if(err){
+      console.log(err)
+      return res.status(500).send("Wrong identifier")
+    }
+  if(rows.length<1){
+    return res.status(404).send("No user found.");
+    
+  }
+  if(rows){
+    return res.status(200).send(rows)
+  }
+  })
+})
 
 router.post("/login", function (req , res) {
   console.log("login in")

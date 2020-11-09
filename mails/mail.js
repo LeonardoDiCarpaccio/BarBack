@@ -20,7 +20,6 @@ var mailOptions;
 var mail = {
 
     sendMail: function (req, callback) {
-<<<<<<< HEAD
         var body = req.body;
         console.log(body.data, body.data.length, body)
         mail = '<div style="width:80%; height: 90%; background-color: white">' + body.nom + ',';

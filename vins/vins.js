@@ -65,6 +65,11 @@ console.log("INSERT INTO historique (nom,qte,prix,total,nom_prenom,email,date,ph
 
 //    return (Array.isArray(update)) ? db.query("INSERT INTO historique (nom,qte,prix,total,nom_prenom,email,date,phone,adresse) VALUES "+update.join(",")+";",callback)
 //     :  db.query("INSERT INTO historique (nom,qte,prix,total,nom_prenom,email,date,phone,adresse) VALUES "+update,callback)
+},
+getHistoCommande : function(req,callback){
+
+db.query("SELECT * FROM historique",callback)
+
 }
 
 
