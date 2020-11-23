@@ -10,40 +10,8 @@ var config = require("../config");
 var User = require("../users/Users");
 var VerifyToken = require("./VerifyToken");
 
-// router.post("/login", function (req , res) {
-  
-//   User.getUsers({email : req.body.email}, function (err, row) {
-//     if (err) return res.status(500).send("Error on the server.");
-
-//     if (!user) return res.status(404).send("No user found.");
-//     var user = Object.values(JSON.stringify(JSON.parse(row)));
-//     var password = (user.length > 0 && typeof user != 'undefined') ? user[0].password : "";
-//     var passwordIsValid = bcrypt.compareSync(req.body.password, password);
-    
-  
-
-//     if (!passwordIsValid)
-//       return res.status(401).send({ auth: false, token: null });
-
-//       var id = (user.length > 0 && typeof user != 'undefined') ? user[0].id : "";
-
-//       var role = (user.length > 0 && typeof user != 'undefined') ? user[0].role : "";
-     
-//      var token = jwt.sign({ userId: id, role:  role}, config.secret, {
-//       expiresIn: "2h",
-//     });
-
-
-//     const userInfo = {
-//       token,
-//       id
-//     }
-    
-//     return res.status(200).send(userInfo);  // { auth: true, token: token }
-//   });
-// });
-router.post("/connect",function(req,res){
-  Auth.connect(req,function(err,row){
+router.post("/register",function(req,res){
+  Auth.register(req,function(err,row){
     if(err){
       console.log(err)
     }
@@ -53,21 +21,6 @@ router.post("/connect",function(req,res){
   })
 })
 
-router.post("/truelogin",function(req,res){
-  Auth.truelogin(req,function(err,rows){
-    if(err){
-      console.log(err)
-      return res.status(500).send("Wrong identifier")
-    }
-  if(rows.length<1){
-    return res.status(404).send("No user found.");
-    
-  }
-  if(rows){
-    return res.status(200).send(rows)
-  }
-  })
-})
 
 router.post("/login", function (req , res) {
   console.log("login in")
@@ -75,23 +28,25 @@ router.post("/login", function (req , res) {
     if (err) return res.status(500).send("Error on the server.");
 
     var row = Object.values(JSON.parse(JSON.stringify(us)));
-
+console.log(row)
     if (!row) return res.status(404).send("No user found.");
     var passwordIsValid = (row.length>0) ? row[0].password===req.body.password ? true : false : null;
     if(!passwordIsValid) return res.status("wrong password")
-    
-      var id = row[0].id;
-      var role = row[0].password;
 
+      var id = row[0].id_user;
+      
+      var role = row[0].role;
+      console.log("id"+id)
      
-     var token = jwt.sign({ userId: id}, config.secret, {
+     var token = jwt.sign({ userId: id,role : role}, config.secret, {
       expiresIn: "2h",
     });
 
 console.log(token)
     const userInfo = {
       token,
-      id
+      id,
+      role
     }
 
    
@@ -106,6 +61,7 @@ router.get("/logout",function (req, res) {
 
   res.status(200).send({ auth: false, token: null });
 });
+
 
 router.get("/check", VerifyToken, function (req, res) {
 console.log("checkout in")

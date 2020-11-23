@@ -14,18 +14,28 @@ db.query("SELECT * FROM user WHERE pseudo = '"+body.pseudo+"' AND password = '"+
 
 },
 
-truelogin: function(req,callback){
-    var body = req.body
-    db.query("SELECT * FROM user WHERE pseudo = '"+body.pseudo+"' AND password = '"+body.password+"'",function(err,infouser){
-        if(err){
-            callback(err,"wrong pseudo")
-        }
+register : function(req,callback){
+var body = req.body
 
-        else{
-            callback(null,infouser)
-        }})
-        
+var column = []
+var values = []
+if(body.email!=="undefined"){
+    column.push('email')
+    values.push(body.email)
+}
+if(body.password!=="undefined"){
+    column.push('password')
+    values.push(body.password)
+}
+if(body.role!=="undefined"){
+    column.push('role')
+    values.push(body.role)
+}
+
+db.query("INSERT INTO user ("+column.join(",")+") VALUES ('"+values.join("','")+"')",callback)
 },
+
+
 
 login : function(req,callback){
 
@@ -34,14 +44,17 @@ login : function(req,callback){
     console.log("entering in login");
     console.log("imbody"+body.email);
     (typeof body.email != "undefined") ?
-    Array.isArray(body.email)?
-    where.push("email IN ('"+body.email.join("','") +"')") : 
+
     where.push("email = '"+body.email+"'") :
     null;
 
+    (typeof body.password != "undefined") ?
+    where.push("password = '"+body.password+"'") :
+    null;
+
     return (where.length > 0) ?  
-    db.query("SELECT * FROM users WHERE "+where.join(" AND "), callback) : 
-     db.query("SELECT * FROM users WHERE "+where, callback);
+    db.query("SELECT * FROM user WHERE "+where.join(" AND "), callback) : null
+ 
 
  
 
