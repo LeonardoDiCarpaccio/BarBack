@@ -16,25 +16,15 @@ router.post("/insertCommand", function(req, res){
         }
     })
 })
-router.post("/getCommandOwner", function(req, res){
-    Command.getCommandOwner(req,function(err , rows){
+
+router.post("/getCommand", function(req, res){
+    Command.getCommand(req,function(err , rows){
         if(err){
             console.log(err)
         }
         else{
             res.json(rows)
-            console.log('getCommandOwner done')
-        }
-    })
-})
-router.post("/getHistoCommand", function(req, res){
-    Command.getHistoCommand(req,function(err , rows){
-        if(err){
-            console.log(err)
-        }
-        else{
-            res.json(rows)
-            console.log('getHistoCommand done')
+            console.log('getCommand done')
         }
     })
 })

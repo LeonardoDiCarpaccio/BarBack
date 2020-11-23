@@ -50,30 +50,44 @@ insertCommand : function(req, callback)
 
     
 },
-getCommandOwner : function(req, callback){
-    var body=req.body
-    console.log(body)
-    db.query("SELECT * FROM tb_commande WHERE status = 2 AND id_owner = '"+body.id+"' ORDER BY date" ,
-    function(err , command){
-    command.forEach(elt => {
-            elt.detail = JSON.parse(elt.detail)
-        });
-        callback(null,command)
-    })
 
-},
-
-getHistoCommand : function(req, callback){
+getCommand : function(req, callback){
     var body = req.body
-    db.query("SELECT * FROM tb_commande WHERE status = 1 AND id_owner '"+body.id+"' ORDER BY date",
+    if(body.idask==="O")
+    {
+    db.query("SELECT * FROM tb_commande WHERE status = '"+body.status+"' AND id_owner = '"+body.id+"' ORDER BY date",
     function(err , command){
+        console.log(err)
         command.forEach(elt => {
                 elt.detail = JSON.parse(elt.detail)
             });
+            if(command === "undefined"){
+                callback(err,"Rien ne correspond à la demande")
+            }
+            else{
             callback(null,command)
+            }
         })
-},
 
+
+
+    }
+    else{
+        db.query("SELECT * FROM tb_commande WHERE status = '"+body.status+"' AND id_user = '"+body.id+"' ORDER BY date",
+    function(err , command){
+        console.log(err)
+        command.forEach(elt => {
+                elt.detail = JSON.parse(elt.detail)
+            });
+            if(command === "undefined"){
+                callback(err,"Rien ne correspond à la demande")
+            }
+            else{
+            callback(null,command)
+            }
+        })
+    }
+},
 updateCommandStatus : function(req,callback){
     var body=req.body
     
