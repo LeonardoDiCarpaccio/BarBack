@@ -43,7 +43,48 @@ getCarte : function(req, callback)
         callback(null, res)
     }
     )
+},
+
+getItems : function(req,callback){
+var res ={
+    tb_categories : null,
+    cat : []
 }
+    var idArray = []
+    db.query("SELECT * FROM categories",function(err,categories){
+        if(err){
+            console.log(err)
+        }
+
+        if(categories!=="undefined"){
+            res.tb_categories = categories.slice()
+            categories.forEach((el)=>{
+                    idArray.push(el.id_categorie)
+            })
+        }
+
+        idArray.forEach((el)=>{
+                const tempo = categories.filter(element=>element.id_categorie===el)
+                res.cat.push({id_categorie : el,items : tempo})
+        })
+
+
+        callback(null,res) 
+
+    })
+},
+
+addCartes : function(req,callback){
+  var body = req.body
+  stringifyed = JSON.stringify(body.array)
+  console.log(stringifyed)
+db.query("INSERT INTO tb_carte (carte) VALUES ('"+stringifyed+"')",callback)
+  
+},
+
+
+
+
    
 }
 module.exports = Carte
