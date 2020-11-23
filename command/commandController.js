@@ -38,5 +38,16 @@ router.post("/getHistoCommand", function(req, res){
         }
     })
 })
+router.post("/updateStatus", function(req, res){
+    Command.updateCommandStatus(req,function(err , rows){
+        if(err){
+            console.log(err)
+        }
+        else{
+            res.json(rows)
+            console.log('getHistoCommand done')
+        }
+    })
+})
 
 module.exports = router
