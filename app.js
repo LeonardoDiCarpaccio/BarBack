@@ -42,8 +42,7 @@ app.use(slug +'/users', UsersController);
 var mailController = require('./mails/mailController')
 app.use(slug + '/mails', mailController);
 
-var vinscontroller = require('./vins/vinsController')
-app.use(slug + '/vins',vinscontroller)
-
+var carteController = require('./cartes/carteController')
+app.use(slug + '/cartes', carteController);
 
 module.exports = app;
