@@ -45,4 +45,7 @@ app.use(slug + '/mails', mailController);
 var carteController = require('./cartes/carteController')
 app.use(slug + '/cartes', carteController);
 
+var commandController = require('./command/commandController')
+app.use(slug + '/command', commandController)
+
 module.exports = app;
