@@ -6,7 +6,6 @@ const Vins = {
 getWine : function(req,callback){
     var i = 0
 
-
 return db.query("SELECT * FROM vins",function(err,wine){
     var res = new Array
     if(err){
@@ -36,8 +35,6 @@ var body=req.body
 console.log(body)
 var updating=[]
 
-
-
 if(body.update!=="undefinded"){
 
 //     body.update.forEach((el)=>{
@@ -66,13 +63,10 @@ console.log("INSERT INTO historique (nom,qte,prix,total,nom_prenom,email,date,ph
 //    return (Array.isArray(update)) ? db.query("INSERT INTO historique (nom,qte,prix,total,nom_prenom,email,date,phone,adresse) VALUES "+update.join(",")+";",callback)
 //     :  db.query("INSERT INTO historique (nom,qte,prix,total,nom_prenom,email,date,phone,adresse) VALUES "+update,callback)
 },
+
 getHistoCommande : function(req,callback){
-
 db.query("SELECT * FROM historique",callback)
-
 }
-
-
 
 }
 
