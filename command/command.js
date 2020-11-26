@@ -68,6 +68,9 @@ getCommand : function(req, callback){
             callback(null,command)
             }
         })
+
+
+
     }
     else{
         db.query("SELECT * FROM tb_commande WHERE status = '"+body.status+"' AND id_user = '"+body.id+"' ORDER BY date",
@@ -85,5 +88,10 @@ getCommand : function(req, callback){
         })
     }
 },
+updateCommandStatus : function(req,callback){
+    var body=req.body
+    
+    db.query("UPDATE tb_commande SET status = "+body.status+" WHERE id_owner = "+body.id_owner+" AND id_client = "+body.id_client+" AND id_commande = "+body.id_commande,callback)
+}
 }
 module.exports = Command

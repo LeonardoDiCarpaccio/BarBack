@@ -16,5 +16,30 @@ router.post("/getCarte", function(req, res){
         }
     })
 })
+router.post("/getitems", function(req, res){
+    Carte.getItems(req,function(err , rows){
+        if(err){
+            console.log(err)
+        }
+        else{
+            res.json(rows)
+            console.log('getCarte done')
+        }
+    })
+})
+router.post("/addcarte", function(req, res){
+    Carte.addCartes(req,function(err , rows){
+        if(err){
+            console.log(err)
+        }
+        else{
+            res.json(rows)
+            console.log('getCarte done')
+        }
+    })
+})
+
+
+
 
 module.exports = router
