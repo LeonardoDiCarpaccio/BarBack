@@ -17,8 +17,19 @@ router.post("/insertCity", function(req, res){
     })
 })
 
-router.post("/getCity", function(req, res){
-    City.getCity(req,function(err , rows){
+router.post("/getIdByCity", function(req, res){
+    City.getIdPerCity(req,function(err , rows){
+        if(err){
+            console.log(err)
+        }
+        else{
+            res.json(rows)
+            console.log('getCity done')
+        }
+    })
+})
+router.post("/getIdByName", function(req, res){
+    City.getIdPerName_institution(req,function(err , rows){
         if(err){
             console.log(err)
         }
