@@ -1,8 +1,8 @@
 var db = require("../db");
-const { dateNow,cleanQuery } = require("../helpers/functions");
+const { dateNow, cleanQuery } = require("../helpers/functions");
 const { update } = require("../users/Users");
 
-const Carte ={
+const Carte = {
     get: function (req, callback) {
         var body = (typeof req.body != "undefined") ? req.body : req;
         let target = (typeof body.only != "undefined") && Array.isArray(body.only) && body.only.length > 0 ? body.only.join(',') : "*"; // 
@@ -21,19 +21,19 @@ const Carte ={
         (where.length > 0) ? db.query("SELECT " + target + " FROM tb_carte WHERE " + where.join(" AND "), function (err, rows) {
             var result = (typeof rows != "undefined") ? Object.values(JSON.parse(JSON.stringify(rows))) : [];
 
-            result.forEach((el)=>{
-                    typeof el.carte != "undefined" ? el.carte = JSON.parse(el.carte) : null;
-                
+            result.forEach((el) => {
+                typeof el.carte != "undefined" ? el.carte = JSON.parse(el.carte) : null;
+
             })
             return callback(null, result);
         }) : db.query("SELECT " + target + " FROM tb_carte ", function (err, rows) {
             var result = (typeof rows != "undefined") ? Object.values(JSON.parse(JSON.stringify(rows))) : [];
-            result.forEach((el)=>{
+            result.forEach((el) => {
                 typeof el.carte != "undefined" ? el.carte = JSON.parse(el.carte) : null;
-            
-        })
-            
-        return callback(null, result);
+
+            })
+
+            return callback(null, result);
         })
 
 
@@ -69,58 +69,56 @@ const Carte ={
         body = cleanQuery(body);
         var carte = typeof body.carte != "undefined" ? body.carte : {}
 
-var update = []
-       Carte.get({id_user : body.id_user},function(err,cartes){
-               if(cartes.length>0){
+        var update = []
+        Carte.get({ id_user: body.id_user }, function (err, cartes) {
+            if (cartes.length > 0) {
 
-                            cartes.forEach(element => {
-                                if(Object.keys(element.carte).length>0){
-                                    if(Object.keys(carte).length>0){
-                                         typeof carte.nom != "undefined" ? element.carte.nom = carte.nom : null;
-                                         typeof carte.prix != "undefined" ? element.carte.prix = carte.prix : null;
-                                         typeof carte.id_categorie != "undefined" ? element.carte.id_categorie = carte.id_categorie : null;
-                                         typeof carte.description != "undefined" ? element.carte.description  = carte.description : null;
-                                         typeof carte.img != "undefined" ? element.carte.img = carte.img : null;
-                                    }
-                                }
-                                else {
-                                    element.cartes = carte
-                                }
-                                JSON.stringify(element.carte).length > 0
-                                ? update.push(
-                                    "carte = '" + JSON.stringify(element.carte) + "'"
-                                  )
-                                : null;
-                            });
-
-                            return db.query(
-                                "UPDATE tb_carte SET "+update.join(",")+"WHERE id_user = "+body.id_user,
-                                  callback
-                              );
-               }
-
-
-                    else{
-                            callback(null,"no updated")
+                cartes.forEach(element => {
+                    if (Object.keys(element.carte).length > 0) {
+                        if (Object.keys(carte).length > 0) {
+                            typeof carte.nom != "undefined" ? element.carte.nom = carte.nom : null;
+                            typeof carte.prix != "undefined" ? element.carte.prix = carte.prix : null;
+                            typeof carte.id_categorie != "undefined" ? element.carte.id_categorie = carte.id_categorie : null;
+                            typeof carte.description != "undefined" ? element.carte.description = carte.description : null;
+                            typeof carte.img != "undefined" ? element.carte.img = carte.img : null;
+                        }
                     }
-                
-     
-       })
-    
+                    else {
+                        element.cartes = carte
+                    }
+                    JSON.stringify(element.carte).length > 0
+                        ? update.push(
+                            "carte = '" + JSON.stringify(element.carte) + "'"
+                        )
+                        : null;
+                });
 
+                return db.query(
+                    "UPDATE tb_carte SET " + update.join(",") + "WHERE id_user = " + body.id_user,
+                    callback
+                );
+            }
+
+
+            else {
+                callback(null, "no updated")
+            }
+
+
+        })
     },
     delete: function (req, callback) {
         var body = typeof req.body != "undefined" ? req.body : req;
-    
+
         return db.query(
-          "DELETE FROM tb_carte WHERE id = " + body.id,
-          callback
+            "DELETE FROM tb_carte WHERE id = " + body.id,
+            callback
         );
-      },
+    },
 
 
 
 
-   
+
 }
 module.exports = Carte
