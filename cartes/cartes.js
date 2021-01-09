@@ -67,16 +67,14 @@ const Carte ={
     update: function (req, callback) {
         var body = typeof req.body != "undefined" ? req.body : req;
         body = cleanQuery(body);
-        var carte = typeof body.carte != "undefined" ? body.carte : null
+        var carte = typeof body.carte != "undefined" ? JSON.stringify(body.carte) : null
 
 
        Carte.get({id_user : body.id_user},function(err,cartes){
                if(cartes.length>0 && carte!==null){
-
-                           
-                              
+                        
                             return db.query(
-                                "UPDATE tb_carte SET carte = "+JSON.stringify(carte)+"WHERE id_user = "+body.id_user,
+                                "UPDATE tb_carte SET carte = "+carte+"WHERE id_user = "+body.id_user,
                                   callback
                               );
                }

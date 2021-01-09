@@ -5,7 +5,7 @@ router.use(bodyParser.urlencoded({ extended: false }));
 router.use(bodyParser.json());
 var Carte = require('./cartes')
 
-router.post("/test", function(req, res){
+router.post("/update", function(req, res){
     Carte.update(req,function(err , rows){
         if(err){
             console.log(err)
@@ -27,8 +27,19 @@ router.post("/", function(req, res){
         }
     })
 })
-router.post("/addcarte", function(req, res){
-    Carte.addCartes(req,function(err , rows){
+router.post("/insert", function(req, res){
+    Carte.insert(req,function(err , rows){
+        if(err){
+            console.log(err)
+        }
+        else{
+            res.json(rows)
+            console.log('getCarte done')
+        }
+    })
+})
+router.post("/delete", function(req, res){
+    Carte.delete(req,function(err , rows){
         if(err){
             console.log(err)
         }
