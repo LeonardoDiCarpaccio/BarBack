@@ -13,13 +13,41 @@ var VerifyToken = require("./VerifyToken");
 router.post("/register",function(req,res){
   Auth.register(req,function(err,row){
     if(err){
-      console.log(err)
+     return res.status(404).send("not ok")
+    }
+    if(row==="User already exist"){
+      return res.status(404).send("User already exist")
+
     }
     else{
-      res.json(row)
+     return res.status(200).send("OK")
     }
   })
 })
+
+router.get("/check", VerifyToken, function (req, res) {
+  if(req.role ==1) {
+    User.getUsers({id : req.userId}, function (err, user) {
+      if (err)
+        return res.status(500).send("There was a problem finding the user.");
+      if (!user) return res.status(401).send("No user found.");
+      
+      res.status(200).send(user);
+    });
+  
+  }
+  else if(req.role ==2) {
+    Commercials.getCommercialsFilter({id : req.userId}, function (err, user) {
+      if (err)
+        return res.status(500).send("There was a problem finding the user.");
+      if (!user) return res.status(401).send("No user found.");
+  
+      res.status(200).send(user);
+    });
+  
+  }
+
+});
 
 
 router.post("/login", function (req , res) {
@@ -29,7 +57,7 @@ router.post("/login", function (req , res) {
 
     var row = Object.values(JSON.parse(JSON.stringify(us)));
 console.log(row)
-    if (!row) return res.status(404).send("No user found.");
+    if (row.length===0) return res.status(404).send("User not found.");
     var passwordIsValid = (row.length>0) ? row[0].password===req.body.password ? true : false : null;
     if(!passwordIsValid) return res.status("wrong password")
 

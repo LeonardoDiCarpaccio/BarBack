@@ -1,86 +1,122 @@
 var db = require("../db");
-const { dateNow } = require("../helpers/functions");
+const { dateNow,cleanQuery } = require("../helpers/functions");
 const { update } = require("../users/Users");
 
 const Carte ={
-getCarte : function(req, callback)
-{   
-    var body=req.body
-    console.log(body)
-    return db.query("SELECT * FROM tb_carte Where id_user = " + body.id,
-    function(err, carte){
-        console.log(JSON.parse(carte[0].carte))
-    var items = JSON.parse(carte[0].carte)
-        var res = {
-            id_user : carte[0].id_user,
-            cat : []
-        }
-        var categories  = []
-        items.forEach(element => {
-            i = categories.findIndex(marsqfzergaaezfa => marsqfzergaaezfa === element.id_categorie) === -1
-                    if(i){
-                        categories.push(element.id_categorie)
-                    }
+    get: function (req, callback) {
+        var body = (typeof req.body != "undefined") ? req.body : req;
+        let target = (typeof body.only != "undefined") && Array.isArray(body.only) && body.only.length > 0 ? body.only.join(',') : "*"; // 
 
-        });
-        categories.forEach((el)=>{
-            res.cat.push({id_categorie : el,item  : []})
+        var where = [];
+        // body : {"dateadded_inf" :"2020"}
+
+
+        (typeof body.id_user != "undefined") ?
+            Array.isArray(body.id_user) ?
+                where.push("id_user IN (" + body.id_user.join(",") + ")") :
+                where.push("id_user =" + body.id_user) : null;
+
+
+
+        (where.length > 0) ? db.query("SELECT " + target + " FROM tb_carte WHERE " + where.join(" AND "), function (err, rows) {
+            var result = (typeof rows != "undefined") ? Object.values(JSON.parse(JSON.stringify(rows))) : [];
+
+            result.forEach((el)=>{
+                    typeof el.carte != "undefined" ? el.carte = JSON.parse(el.carte) : null;
+                
             })
+            return callback(null, result);
+        }) : db.query("SELECT " + target + " FROM tb_carte ", function (err, rows) {
+            var result = (typeof rows != "undefined") ? Object.values(JSON.parse(JSON.stringify(rows))) : [];
+            result.forEach((el)=>{
+                typeof el.carte != "undefined" ? el.carte = JSON.parse(el.carte) : null;
             
+        })
             
-            categories.forEach((element, index) => {
-              items.forEach(el=>{
-                if(element===el.id_categorie){
-                   
-                  res.cat[index].item.push(el)
-                }
-              })
-            });
-        console.log("mange ta mert")
-        console.log(categories[0])
-        console.log(categories[1])
-        console.log(categories[2])
-        callback(null, res)
-    }
-    )
-},
-
-getItems : function(req,callback){
-var res ={
-    tb_categories : null,
-    cat : []
-}
-    var idArray = []
-    db.query("SELECT * FROM categories",function(err,categories){
-        if(err){
-            console.log(err)
-        }
-
-        if(categories!=="undefined"){
-            res.tb_categories = categories.slice()
-            categories.forEach((el)=>{
-                    idArray.push(el.id_categorie)
-            })
-        }
-
-        idArray.forEach((el)=>{
-                const tempo = categories.filter(element=>element.id_categorie===el)
-                res.cat.push({id_categorie : el,items : tempo})
+        return callback(null, result);
         })
 
 
-        callback(null,res) 
+    },
+    insert: function (req, callback) {
+        var body = typeof req.body != "undefined" ? req.body : req;
+        body = cleanQuery(body);
 
-    })
-},
+        var keys = [];
+        var values = [];
+        for (const [key, value] of Object.entries(body)) {
+            if (value != null) {
+                typeof value == "string"
+                    ? values.push("'" + value + "'")
+                    : typeof value == "int" ?
+                        values.push(value) : values.push("'" + JSON.stringify(value) + "'")
+                keys.push(key);
+            }
+        }
 
-addCartes : function(req,callback){
-  var body = req.body
-  stringifyed = JSON.stringify(body.array)
-  console.log(stringifyed)
-db.query("INSERT INTO tb_carte (carte) VALUES ('"+stringifyed+"')",callback)
-  
-},
+        return db.query(
+            "INSERT INTO tb_carte (" +
+            keys.join(",") +
+            ") VALUES  (" +
+            values.join(",") +
+            ")",
+            callback
+        );
+    },
+
+    update: function (req, callback) {
+        var body = typeof req.body != "undefined" ? req.body : req;
+        body = cleanQuery(body);
+        var carte = typeof body.carte != "undefined" ? body.carte : {}
+
+var update = []
+       Carte.get({id_user : body.id_user},function(err,cartes){
+               if(cartes.length>0){
+
+                            cartes.forEach(element => {
+                                if(Object.keys(element.carte).length>0){
+                                    if(Object.keys(carte).length>0){
+                                         typeof carte.nom != "undefined" ? element.carte.nom = carte.nom : null;
+                                         typeof carte.prix != "undefined" ? element.carte.prix = carte.prix : null;
+                                         typeof carte.id_categorie != "undefined" ? element.carte.id_categorie = carte.id_categorie : null;
+                                         typeof carte.description != "undefined" ? element.carte.description  = carte.description : null;
+                                         typeof carte.img != "undefined" ? element.carte.img = carte.img : null;
+                                    }
+                                }
+                                else {
+                                    element.cartes = carte
+                                }
+                                JSON.stringify(element.carte).length > 0
+                                ? update.push(
+                                    "carte = '" + JSON.stringify(element.carte) + "'"
+                                  )
+                                : null;
+                            });
+
+                            return db.query(
+                                "UPDATE tb_carte SET "+update.join(",")+"WHERE id_user = "+body.id_user,
+                                  callback
+                              );
+               }
+
+
+                    else{
+                            callback(null,"no updated")
+                    }
+                
+     
+       })
+    
+
+    },
+    delete: function (req, callback) {
+        var body = typeof req.body != "undefined" ? req.body : req;
+    
+        return db.query(
+          "DELETE FROM tb_carte WHERE id = " + body.id,
+          callback
+        );
+      },
 
 
 

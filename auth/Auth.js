@@ -1,4 +1,3 @@
-const { response } = require("express");
 var db = require("../db");
 const { dateNow } = require("../helpers/functions");
 
@@ -69,39 +68,51 @@ var Auth = {
             column.push('birthday')
             values.push(body.birthday)
         }
-        db.query("INSERT INTO user (" + column.join(",") + ") VALUES ('" + values.join("','") + "')",
-            function (err, response) {
-                if (err) {
-                    callback(err, "can not insert")
-                }
-                else {
-                    if (body.role === 1) {
-                        callback(null, response)
+        db.query("SELECT email FROM user WHERE email ='"+body.email+"'",function(err,user){
+                console.log(user)
+                console.log("length"+user.length)
+            if(user.length>0){
+                callback(err,"User already exist")
+            }
+            else {
+                db.query("INSERT INTO user (" + column.join(",") + ") VALUES ('" + values.join("','") + "')",
+                function (err, response) {
+                    if (err) {
+                        callback(err, "can not insert")
                     }
                     else {
-                        const dehka = JSON.parse(body.adresse)
-                        return db.query("SELECT * FROM tb_ville WHERE ville = '" + dehka.ville + "'", function (err, citys) {
-                            if(citys.length>0){
-                                console.log(citys)
-                                const fulldehka = JSON.parse(citys[0].id_owner)
-                                fulldehka.array.push({id_owner : response.insertId})
-                                citys[0].id_owner = JSON.stringify(fulldehka) 
-                                console.log(citys[0].id_owner)
-                                db.query("UPDATE tb_ville SET id_owner = "+JSON.stringify(citys[0].id_owner)+" WHERE ville = '"+ dehka.ville +"'",callback)
-                            }
-                            else{
-                                const tempo = [{id_owner : response.insertId}]
-                                resElse={
-                                    array : tempo
+                        if (body.role === 1) {
+                            
+                            callback(null, "register OK")
+                        }
+                        else {
+                            const dehka = JSON.parse(body.adresse)
+                            return db.query("SELECT * FROM tb_ville WHERE ville = '" + dehka.ville + "'", function (err, citys) {
+                                if(citys.length>0){
+                                    console.log(citys)
+                                    const fulldehka = JSON.parse(citys[0].id_owner)
+                                    fulldehka.array.push({id_owner : response.insertId})
+                                    citys[0].id_owner = JSON.stringify(fulldehka) 
+                                    console.log(citys[0].id_owner)
+                                    db.query("UPDATE tb_ville SET id_owner = "+JSON.stringify(citys[0].id_owner)+" WHERE ville = '"+ dehka.ville +"'",callback)
                                 }
-                               db.query("INSERT INTO tb_ville (ville,id_owner) VALUES ('"+dehka.ville+"','"+JSON.stringify(resElse)+"')",callback)
-                            }
-
-
-                        })
+                                else{
+                                    const tempo = [{id_owner : response.insertId}]
+                                    resElse={
+                                        array : tempo
+                                    }
+                                   db.query("INSERT INTO tb_ville (ville,id_owner) VALUES ('"+dehka.ville+"','"+JSON.stringify(resElse)+"')",callback)
+                                }
+    
+    
+                            })
+                        }
                     }
-                }
-            })
+                }) 
+            }
+      
+        })
+             
     },
 
 

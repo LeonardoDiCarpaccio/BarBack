@@ -15,7 +15,7 @@ var city
 (typeof body.id_owner !=="undefined") ? city=body.id_owner : null
 
  db.query("SELECT * FROM tb_ville WHERE ville = '"+city+"'",function(err,institution){
-if(institution==="undefined"){
+if(institution.length>0){
     callback(err,"No city in DB")
 }
 else{
@@ -42,6 +42,14 @@ getIdPerName_institution : function(req,callback){
     
      })
     
-    }
+    },
+    delete: function (req, callback) {
+        var body = typeof req.body != "undefined" ? req.body : req;
+    
+        return db.query(
+          "DELETE FROM event_history WHERE id = " + body.id,
+          callback
+        );
+      },
 }
 module.exports = City

@@ -5,8 +5,8 @@ router.use(bodyParser.urlencoded({ extended: false }));
 router.use(bodyParser.json());
 var Carte = require('./cartes')
 
-router.post("/getCarte", function(req, res){
-    Carte.getCarte(req,function(err , rows){
+router.post("/test", function(req, res){
+    Carte.update(req,function(err , rows){
         if(err){
             console.log(err)
         }
@@ -16,8 +16,8 @@ router.post("/getCarte", function(req, res){
         }
     })
 })
-router.post("/getitems", function(req, res){
-    Carte.getItems(req,function(err , rows){
+router.post("/", function(req, res){
+    Carte.get(req,function(err , rows){
         if(err){
             console.log(err)
         }
