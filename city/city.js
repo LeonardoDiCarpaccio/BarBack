@@ -1,53 +1,101 @@
 var db = require("../db");
-const { dateNow } = require("../helpers/functions");
 const { update } = require("../users/Users");
+const { dateNow,cleanQuery } = require("../helpers/functions");
 
 const City ={
-insertCity : function(req, callback){
-    var body = req.body
-    db.query("INSERT INTO tb_ville ")
 
-},
+    get: function (req, callback) {
+        var body = (typeof req.body != "undefined") ? req.body : req;
+        let target = (typeof body.only != "undefined") && Array.isArray(body.only) && body.only.length > 0 ? body.only.join(',') : "*"; // 
 
-getIdPerCity : function(req,callback){
-var body = req.body
-var city
-(typeof body.id_owner !=="undefined") ? city=body.id_owner : null
+        var where = [];
+        // body : {"dateadded_inf" :"2020"}
 
- db.query("SELECT * FROM tb_ville WHERE ville = '"+city+"'",function(err,institution){
-if(institution.length>0){
-    callback(err,"No city in DB")
-}
-else{
-console.log(institution[0].id_owner)
-const dehka = JSON.parse(institution[0].id_owner)
-callback(null,dehka)
-}
 
- })
+        (typeof body.ville != "undefined") ?
+            Array.isArray(body.ville) ?
+                where.push("ville IN (" + body.ville.join(",") + ")") :
+                where.push("ville = '" + body.ville+"'") : null;
 
-},
-getIdPerName_institution : function(req,callback){
-    var body = req.body
-    var nameInstitution
-    (typeof body.name !=="undefined") ? nameInstitution=body.name : null
-    
-     db.query("SELECT * FROM user WHERE name_institution = '"+nameInstitution+"'",function(err,institution){
-    if(institution==="undefined"){
-        callback(err,"No city in DB")
-    }
-    else{
-   return  callback(null,institution)
-    }
-    
-     })
-    
+
+                console.log("SELECT " + target + " FROM tb_ville WHERE " + where.join(" AND "));
+
+        (where.length > 0) ? db.query("SELECT " + target + " FROM tb_ville WHERE " + where.join(" AND "), function (err, rows) {
+            var result = (typeof rows != "undefined") ? Object.values(JSON.parse(JSON.stringify(rows))) : [];
+
+            result.forEach((el)=>{
+                    typeof el.id_owner != "undefined" ? el.id_owner = JSON.parse(el.id_owner) : null;
+                
+            })
+            return callback(null, result);
+        }) : db.query("SELECT " + target + " FROM tb_ville ", function (err, rows) {
+            var result = (typeof rows != "undefined") ? Object.values(JSON.parse(JSON.stringify(rows))) : [];
+            result.forEach((el)=>{
+                typeof el.id_owner != "undefined" ? el.id_owner = JSON.parse(el.id_owner) : null;
+            
+        })
+            
+        return callback(null, result);
+        })
+
+
     },
+
+    insert: function (req, callback) {
+        var body = typeof req.body != "undefined" ? req.body : req;
+        body = cleanQuery(body);
+
+        var keys = [];
+        var values = [];
+        for (const [key, value] of Object.entries(body)) {
+            if (value != null) {
+                typeof value == "string"
+                    ? values.push("'" + value + "'")
+                    : typeof value == "int" ?
+                        values.push(value) : values.push("'" + JSON.stringify(value) + "'")
+                keys.push(key);
+            }
+        }
+
+        return db.query(
+            "INSERT INTO tb_ville (" +
+            keys.join(",") +
+            ") VALUES  (" +
+            values.join(",") +
+            ")",
+            callback
+        );
+    },
+
+    update: function (req, callback) {
+        var body = typeof req.body != "undefined" ? req.body : req;
+        body = cleanQuery(body);
+        var ville = typeof body.ville != "undefined" ? body.ville : null
+        var id_owner = typeof body.id_owner != "undefined" ? JSON.stringify(body.id_owner) : null
+       City.get({ville : ville},function(err,villes){
+           console.log(villes)
+               if(villes.length>0 && ville!==null){
+                        
+                            return db.query(
+                                "UPDATE tb_ville SET id_owner = "+id_owner+"WHERE ville = '"+ville+"'",
+                                  callback
+                              );
+               }
+                    else{
+                            callback(null,"no updated")
+                    }
+                
+     
+       })
+    
+
+    },
+
     delete: function (req, callback) {
         var body = typeof req.body != "undefined" ? req.body : req;
     
         return db.query(
-          "DELETE FROM event_history WHERE id = " + body.id,
+          "DELETE FROM tb_ville WHERE ville = '" + body.ville+"'",
           callback
         );
       },

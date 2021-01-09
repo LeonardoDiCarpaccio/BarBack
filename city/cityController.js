@@ -5,8 +5,8 @@ router.use(bodyParser.urlencoded({ extended: false }));
 router.use(bodyParser.json());
 var City = require('./city')
 
-router.post("/insertCity", function(req, res){
-    City.insertCity(req,function(err , rows){
+router.post("/", function(req, res){
+    City.get(req,function(err , rows){
         if(err){
             console.log(err)
         }
@@ -17,8 +17,8 @@ router.post("/insertCity", function(req, res){
     })
 })
 
-router.post("/getIdByCity", function(req, res){
-    City.getIdPerCity(req,function(err , rows){
+router.post("/insert", function(req, res){
+    City.insert(req,function(err , rows){
         if(err){
             console.log(err)
         }
@@ -28,8 +28,8 @@ router.post("/getIdByCity", function(req, res){
         }
     })
 })
-router.post("/getIdByName", function(req, res){
-    City.getIdPerName_institution(req,function(err , rows){
+router.post("/update", function(req, res){
+    City.update(req,function(err , rows){
         if(err){
             console.log(err)
         }

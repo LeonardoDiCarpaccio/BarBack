@@ -67,45 +67,25 @@ const Carte = {
     update: function (req, callback) {
         var body = typeof req.body != "undefined" ? req.body : req;
         body = cleanQuery(body);
-        var carte = typeof body.carte != "undefined" ? body.carte : {}
+        var carte = typeof body.carte != "undefined" ? JSON.stringify(body.carte) : null
 
-        var update = []
+
         Carte.get({ id_user: body.id_user }, function (err, cartes) {
-            if (cartes.length > 0) {
-
-                cartes.forEach(element => {
-                    if (Object.keys(element.carte).length > 0) {
-                        if (Object.keys(carte).length > 0) {
-                            typeof carte.nom != "undefined" ? element.carte.nom = carte.nom : null;
-                            typeof carte.prix != "undefined" ? element.carte.prix = carte.prix : null;
-                            typeof carte.id_categorie != "undefined" ? element.carte.id_categorie = carte.id_categorie : null;
-                            typeof carte.description != "undefined" ? element.carte.description = carte.description : null;
-                            typeof carte.img != "undefined" ? element.carte.img = carte.img : null;
-                        }
-                    }
-                    else {
-                        element.cartes = carte
-                    }
-                    JSON.stringify(element.carte).length > 0
-                        ? update.push(
-                            "carte = '" + JSON.stringify(element.carte) + "'"
-                        )
-                        : null;
-                });
+            if (cartes.length > 0 && carte !== null) {
 
                 return db.query(
-                    "UPDATE tb_carte SET " + update.join(",") + "WHERE id_user = " + body.id_user,
+                    "UPDATE tb_carte SET carte = " + carte + "WHERE id_user = " + body.id_user,
                     callback
                 );
             }
-
-
             else {
                 callback(null, "no updated")
             }
 
 
         })
+
+
     },
     delete: function (req, callback) {
         var body = typeof req.body != "undefined" ? req.body : req;
