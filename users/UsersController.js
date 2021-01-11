@@ -8,7 +8,7 @@ var VerifyToken = require('../auth/VerifyToken');
 
 
 router.post('/', VerifyToken,function (req, res) {
-    Users.getUsers(req,function(err,rows){
+    Users.get(req,function(err,rows){
 
         if(err) {
             res.status(400).json(err);

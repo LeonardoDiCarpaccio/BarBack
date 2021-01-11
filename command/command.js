@@ -1,97 +1,105 @@
 var db = require("../db");
-const { dateNow } = require("../helpers/functions");
-const { update } = require("../users/Users");
+const { dateNow,cleanQuery } = require("../helpers/functions");
 
 const Command ={
-insertCommand : function(req, callback)
-{   
-    var details =   { 
-        items : [
-        {nom : 'Mojito', prix : 15, qty  : 2},
-        {nom : 'Pastis', prix : 2, qty : 10}],
-        total : 0}
-        
-    var totalcalcul = 0
-    var body=req.body
-    body.detail = details
-    console.log(body)
-    var column = []
-    var values = []
-    if(body.date!=="undefined"){
-        column.push('date')
-        values.push(body.date)
-    }
-    if(body.id_owner!=="undefined"){
-        column.push('id_owner')
-        values.push(body.id_owner)
-    }
-    if(body.id_client!=="undefined"){
-        column.push('id_client')
-        values.push(body.id_client)
-    }
-    if(body.location!=="undefined"){
-        column.push('location')
-        values.push(body.location)
-    }
-    if(body.status!=="undefined"){
-        column.push('status')
-        values.push(body.status)
-    }
-    if(body.detail!=="undefinded"){
-        column.push('detail')
-        for(i=0; i<details.items.length; i++){
-            details.total += details.items[i].prix * details.items[i].qty
+
+    get: function (req, callback) {
+        var body = (typeof req.body != "undefined") ? req.body : req;
+        body = cleanQuery(body);
+
+        let target = (typeof body.only != "undefined") && Array.isArray(body.only) && body.only.length > 0 ? body.only.join(',') : "*"; // 
+
+        var where = [];
+        // body : {"dateadded_inf" :"2020"}
+
+
+        (typeof body.id_commande != "undefined") ?
+            Array.isArray(body.id_commande) ?
+                where.push("id_commande IN (" + body.id_commande.join(",") + ")") :
+                where.push("id_commande =" + body.id_commande) : null;
+
+
+
+        (where.length > 0) ? db.query("SELECT " + target + " FROM tb_commande WHERE " + where.join(" AND "), function (err, rows) {
+            var result = (typeof rows != "undefined") ? Object.values(JSON.parse(JSON.stringify(rows))) : [];
+
+            return callback(null, result);
+        }) : db.query("SELECT " + target + " FROM tb_commande ", function (err, rows) {
+            var result = (typeof rows != "undefined") ? Object.values(JSON.parse(JSON.stringify(rows))) : [];
+            
+        return callback(null, result);
+        })
+
+
+    },
+    insert: function (req, callback) {
+        var body = typeof req.body != "undefined" ? req.body : req;
+        body = cleanQuery(body);
+
+        var keys = [];
+        var values = [];
+        for (const [key, value] of Object.entries(body)) {
+            if (value != null) {
+                typeof value == "string"
+                    ? values.push("'" + value + "'")
+                    : typeof value == "int" ?
+                        values.push(value) : values.push("'" + JSON.stringify(value) + "'")
+                keys.push(key);
+            }
         }
-        console.log(details.total)
-        body.detail = JSON.stringify(body.detail)
-        values.push(body.detail)
-    }
-    db.query("INSERT INTO tb_commande ("+column.join(",")+") VALUES ('"+values.join("','")+"')",callback)
+        keys.push("date");
+        values.push("'"+dateNow()+"'");
+        return db.query(
+            "INSERT INTO tb_commande (" +
+            keys.join(",") +
+            ") VALUES  (" +
+            values.join(",") +
+            ")",
+            callback
+        );
+    },
 
+    update: function (req, callback) {
+        var body = typeof req.body != "undefined" ? req.body : req;
+        body = cleanQuery(body);
+        var id_commande = typeof body.id_commande != "undefined" ? body.id_commande : null
+
+var update = []
+
+typeof body.id_detail != "undefined"
+? update.push("id_detail = " + body.id_detail )
+: null;
+typeof body.id_client != "undefined"
+? update.push("id_client = " + body.id_client )
+: null;
+typeof body.status != "undefined"
+? update.push("status = " + body.status )
+: null;
+       Command.get({id_commande : body.id_commande},function(err,command){
+               if(command.length>0 && id_commande!==null){
+                        
+                            return db.query(
+                                "UPDATE tb_commande SET "+update.join(",")+" WHERE id_commande = "+id_commande,
+                                  callback
+                              );
+               }
+                    else{
+                            callback(null,"no updated")
+                    }
+                
+     
+       })
     
-},
 
-getCommand : function(req, callback){
-    var body = req.body
-    if(body.idask==="O")
-    {
-    db.query("SELECT * FROM tb_commande WHERE status = '"+body.status+"' AND id_owner = '"+body.id+"' ORDER BY date",
-    function(err , command){
-        console.log(err)
-        command.forEach(elt => {
-                elt.detail = JSON.parse(elt.detail)
-            });
-            if(command === "undefined"){
-                callback(err,"Rien ne correspond à la demande")
-            }
-            else{
-            callback(null,command)
-            }
-        })
-
-
-
-    }
-    else{
-        db.query("SELECT * FROM tb_commande WHERE status = '"+body.status+"' AND id_user = '"+body.id+"' ORDER BY date",
-    function(err , command){
-        console.log(err)
-        command.forEach(elt => {
-                elt.detail = JSON.parse(elt.detail)
-            });
-            if(command === "undefined"){
-                callback(err,"Rien ne correspond à la demande")
-            }
-            else{
-            callback(null,command)
-            }
-        })
-    }
-},
-updateCommandStatus : function(req,callback){
-    var body=req.body
+    },
+    delete: function (req, callback) {
+        var body = typeof req.body != "undefined" ? req.body : req;
     
-    db.query("UPDATE tb_commande SET status = "+body.status+" WHERE id_owner = "+body.id_owner+" AND id_client = "+body.id_client+" AND id_commande = "+body.id_commande,callback)
-}
+        return db.query(
+          "DELETE FROM tb_commande WHERE id_commande = " + body.id_commande,
+          callback
+        );
+      },
+
 }
 module.exports = Command

@@ -13,7 +13,7 @@ function verifyToken(req, res, next) {
     return res.status(500).send({ auth: false, message: 'Failed to authenticate token.' });
 
     req.role = decoded.role
-    req.userId = decoded.userId;
+    req.userId = decoded.userId;k
     next();
   });
 

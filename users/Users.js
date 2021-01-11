@@ -1,36 +1,40 @@
 var db = require("../db");
 var functions = require('../helpers/functions')
 var bcrypt = require('bcryptjs');
+const { dateNow, cleanQuery } = require("../helpers/functions");
 
 var Users = {
 
 
-  
-  getUsers : function(req,callback){
+  get: function (req, callback) {
+    var body = (typeof req.body != "undefined") ? req.body : req;
+    body = cleanQuery(body);
 
-    var body = req.body;
+    let target = (typeof body.only != "undefined") && Array.isArray(body.only) && body.only.length > 0 ? body.only.join(',') : "*"; // 
+
     var where = [];
-
-    (typeof body.email != "undefined") ?
-    Array.isArray(body.email)?
-    where.push("email IN ('"+ body.email.join("','") +"')") : 
-    where.push("email = '" + body.email + "'") :
-    null;
-
-    (typeof body.id != "undefined") ?
-    Array.isArray(body.id)?
-    where.push("id IN ('"+ body.id.join(",")+"')") : 
-    where.push("id = '" + body.id + "'") :
-    null;
+    // body : {"dateadded_inf" :"2020"}
 
 
-    return (where.length > 0) ?  
-    db.query("SELECT * from users WHERE " + where.join(" AND "), callback) : 
-     db.query("SELECT * from users", callback);
+    (typeof body.id_user != "undefined") ?
+        Array.isArray(body.id_user) ?
+            where.push("id_user IN (" + body.id_user.join(",") + ")") :
+            where.push("id_user =" + body.id_user) : null;
 
 
+    (where.length > 0) ? db.query("SELECT " + target + " FROM user WHERE " + where.join(" AND "), function (err, rows) {
+        var result = (typeof rows != "undefined") ? Object.values(JSON.parse(JSON.stringify(rows))) : [];
 
-  },
+        return callback(null, result);
+    }) : db.query("SELECT " + target + " FROM user ", function (err, rows) {
+        var result = (typeof rows != "undefined") ? Object.values(JSON.parse(JSON.stringify(rows))) : [];
+   
+
+        return callback(null, result);
+    })
+
+
+},
   insert: function (req, callback) {
     req = functions.cleanQuery(req);
     let date = functions.dateNow();
