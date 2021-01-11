@@ -6,17 +6,12 @@ const Carte = {
     get: function (req, callback) {
         var body = (typeof req.body != "undefined") ? req.body : req;
         let target = (typeof body.only != "undefined") && Array.isArray(body.only) && body.only.length > 0 ? body.only.join(',') : "*"; // 
-
         var where = [];
         // body : {"dateadded_inf" :"2020"}
-
-
         (typeof body.id_user != "undefined") ?
             Array.isArray(body.id_user) ?
                 where.push("id_user IN (" + body.id_user.join(",") + ")") :
                 where.push("id_user =" + body.id_user) : null;
-
-
 
         (where.length > 0) ? db.query("SELECT " + target + " FROM tb_carte WHERE " + where.join(" AND "), function (err, rows) {
             var result = (typeof rows != "undefined") ? Object.values(JSON.parse(JSON.stringify(rows))) : [];
