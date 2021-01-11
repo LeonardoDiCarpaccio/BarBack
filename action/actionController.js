@@ -6,10 +6,10 @@ router.use(bodyParser.urlencoded({ extended: false }));
 router.use(bodyParser.json());
 
 
-router.post("/getTownFiltered", function(req, res){
-    PreviewUser.getTownFiltered(req,function(err , rows){
+router.post("/passercommande", function(req, res){
+    ActionUser.passerCommande(req,function(err , rows){
         if(err){
-            console.log(err)
+            res.status(400).json(err);
         }
         else{
             res.json(rows)

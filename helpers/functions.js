@@ -40,6 +40,16 @@ isDef: function (val) {
     }
     return query_clean;
   },
+  TableJsonIdSpecificArrayKey : function(table_json, table_array, id_type,arrayKey) {
+
+    table_json = {};
+    arrayKey.forEach((elm)=>{
+      table_array.forEach((el) => table_json[el[id_type]] = el[elm]);
+
+    })
+return table_json;
+  },
+
   TableJsonIdSpecificKey : function(table_json, table_array, id_type,key) {
 
     table_json = {};
