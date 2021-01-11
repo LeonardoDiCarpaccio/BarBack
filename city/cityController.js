@@ -8,7 +8,7 @@ var City = require('./city')
 router.post("/", function(req, res){
     City.get(req,function(err , rows){
         if(err){
-            console.log(err)
+            res.status(400).json(err)
         }
         else{
             res.json(rows)
@@ -20,7 +20,7 @@ router.post("/", function(req, res){
 router.post("/insert", function(req, res){
     City.insert(req,function(err , rows){
         if(err){
-            console.log(err)
+            res.status(400).json(err)
         }
         else{
             res.json(rows)
@@ -31,7 +31,7 @@ router.post("/insert", function(req, res){
 router.post("/update", function(req, res){
     City.update(req,function(err , rows){
         if(err){
-            console.log(err)
+            res.status(400).json(err)
         }
         else{
             res.json(rows)
