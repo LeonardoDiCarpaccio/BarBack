@@ -39,6 +39,9 @@ app.use(slug +'/auth', AuthController);
 var UsersController = require('./users/UsersController')
 app.use(slug +'/users', UsersController);
 
+var PreviewController = require('./preview/previewController')
+app.use(slug +'/preview', PreviewController);
+
 var mailController = require('./mails/mailController')
 app.use(slug + '/mails', mailController);
 

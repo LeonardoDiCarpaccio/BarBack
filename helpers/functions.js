@@ -23,6 +23,17 @@ var Functions = {
     }
     return query_clean;
   },
+  TableJsonIdSpecificKey : function(table_json, table_array, id_type,key) {
 
+    table_json = {};
+    table_array.forEach((el) => table_json[el[id_type]] = el[key]);
+return table_json;
+  },
+  TableJsonId : function(table_json, table_array, id_type) {
+
+    table_json = {};
+    table_array.forEach((el) => table_json[el[id_type]] = el);
+return table_json;
+  },
 }
 module.exports = Functions

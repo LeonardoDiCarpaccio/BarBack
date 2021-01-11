@@ -18,7 +18,6 @@ const City ={
                 where.push("ville = '" + body.ville+"'") : null;
 
 
-                console.log("SELECT " + target + " FROM tb_ville WHERE " + where.join(" AND "));
 
         (where.length > 0) ? db.query("SELECT " + target + " FROM tb_ville WHERE " + where.join(" AND "), function (err, rows) {
             var result = (typeof rows != "undefined") ? Object.values(JSON.parse(JSON.stringify(rows))) : [];
@@ -68,26 +67,40 @@ const City ={
     },
 
     update: function (req, callback) {
+        var array = []
         var body = typeof req.body != "undefined" ? req.body : req;
         body = cleanQuery(body);
         var ville = typeof body.ville != "undefined" ? body.ville : null
-        var id_owner = typeof body.id_owner != "undefined" ? JSON.stringify(body.id_owner) : null
-       City.get({ville : ville},function(err,villes){
-           console.log(villes)
-               if(villes.length>0 && ville!==null){
-                        
-                            return db.query(
-                                "UPDATE tb_ville SET id_owner = "+id_owner+"WHERE ville = '"+ville+"'",
-                                  callback
-                              );
-               }
-                    else{
-                            callback(null,"no updated")
+        var id_owner = typeof body.id_owner != "undefined" ? body.id_owner : null
+      if( id_owner===null || ville === null){
+        City.get({ville : ville},function(err,villes){
+            if(err || ville.length === 0 ){callback(null,"no updated")}
+            else{
+                villes.forEach((el)=>{
+                    if(typeof el.id_owner != "undefined"){
+                        if(Array.isArray(el.id_owner)===true){
+                                el.id_owner.push(id_owner)
+                                console.log("el.id_owner",el.id_owner)
+                                array = [...el.id_owner]
+                                console.log("array",array)
+                        }else{
+                            array.push(id_owner)
+                           
+                        }
                     }
-                
-     
-       })
-    
+                })
+                console.log( "UPDATE tb_ville SET id_owner = '"+array+"' WHERE ville = '"+ville+"'")
+                return db.query(
+                                        "UPDATE tb_ville SET id_owner = '"+JSON.stringify(array)+"' WHERE ville = '"+ville+"'",
+                                          callback
+                                      );
+            }    
+           })
+        
+      }else{
+        callback(null,"wrong ville or id_owner")
+      }
+
 
     },
 
