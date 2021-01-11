@@ -54,6 +54,7 @@ const PreviewUser = {
                         if(err || users.length ===0){
                             callback(err,"no bar")
                         }else{
+                            console.log(users)
 
                             users.forEach((el,index)=>{
 
@@ -63,8 +64,8 @@ const PreviewUser = {
                                     id_categorie.push(el.id_categorie)
                                 }
                         })
-
                         Categories.get({id_categorie : id_categorie},function(err,categories){
+                            console.log(categories)
                             if(err || categories.length ===0) {callback(err,"no categories")}
                             else{
                                 console.log(categories)
