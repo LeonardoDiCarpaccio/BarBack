@@ -54,4 +54,10 @@ app.use(slug + '/city', cityController);
 var commandController = require('./command/commandController')
 app.use(slug + '/command', commandController)
 
+var detailController = require('./detail/detailController')
+app.use(slug + '/detail', detailController)
+
+var itemsController = require('./items/itemsController')
+app.use(slug + '/item', itemsController)
+
 module.exports = app;

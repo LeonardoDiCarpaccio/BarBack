@@ -1,8 +1,8 @@
 var db = require('../db');
 const { isDef, cleanQuery } = require('../helpers/functions');
 
-var Detail = {
-    getDetail: function (req, callback) {
+var Items = {
+    getItems : function (req, callback) {
         let body = isDef(req.body) ? req.body : req;
         let target = (typeof body.only != "undefined") && Array.isArray(body.only) && body.only.length > 0 ? body.only.join(',') : "*";
         let table = [];
@@ -15,9 +15,9 @@ var Detail = {
             }
 
             if (table.length > 0)
-                return db.query('SELECT ' + target + ' FROM detail WHERE ' + table.join(" AND "), callback);
+                return db.query('SELECT ' + target + ' FROM items WHERE ' + table.join(" AND "), callback);
             else
-                return db.query('SELECT ' + target + ' FROM detail', callback);
+                return db.query('SELECT ' + target + ' FROM items', callback);
         } else {
             return callback('ERROR PARAMETERS');
         }
@@ -40,7 +40,7 @@ var Detail = {
         }
 
         return db.query(
-            "INSERT INTO detail (" +
+            "INSERT INTO items (" +
             keys.join(",") +
             ") VALUES  (" +
             values.join(",") +
@@ -54,10 +54,13 @@ var Detail = {
         console.log(body, isDef(body.id))
         if (isDef(body.id)) {
             let table = []
-            if (isDef(body.detail)) table.push("detail='" + body.detail + "'")
-            if (isDef(body.location)) table.push("location='" + body.location + "'")
+            if (isDef(body.nom)) table.push("nom='" + body.nom + "'")
+            if (isDef(body.prix)) table.push("prix='" + body.prix + "'")
+            if (isDef(body.id_categorie)) table.push("id_categorie='" + body.id_categorie + "'")
+            if (isDef(body.description)) table.push("description='" + body.description + "'")
+            if (isDef(body.img)) table.push("img='" + body.img + "'")
             if (table.length > 0) {
-                let query = "UPDATE detail SET " + table.join(',') + " WHERE id =" + body.id
+                let query = "UPDATE items SET " + table.join(',') + " WHERE id =" + body.id
                 return db.query(query, callback);
 
             } else return callback(null, "NOTHING WAS UPDATED")
@@ -76,9 +79,9 @@ var Detail = {
                 : table.push("id = " + body.id)
         }
 
-        if (table.length > 0) return db.query("DELETE FROM detail WHERE " + table.join(" AND "), callback)
+        if (table.length > 0) return db.query("DELETE FROM items WHERE " + table.join(" AND "), callback)
         else return callback("ERROR PARAMETERS")
     }
 }
 
-module.exports = Detail
+module.exports = Items;

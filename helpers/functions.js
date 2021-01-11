@@ -10,6 +10,23 @@ var Functions = {
   
     return finalDate
   },
+  
+isDefArray: function (val) {
+
+  if (typeof val == 'undefined') return false
+  if (!Array.isArray(val)) return false
+  if (val.length == 0) return false
+  if (!(val.every(el => typeof el != 'undefined'))) return false
+
+  return true
+},
+
+
+isDef: function (val) {
+  return Array.isArray(val)
+    ? (val.every(el => typeof el != 'undefined'))
+    : typeof val != 'undefined';
+},
 
   cleanQuery: function (query) {
     var query_clean = query;
@@ -36,4 +53,5 @@ return table_json;
 return table_json;
   },
 }
+
 module.exports = Functions
