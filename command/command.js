@@ -13,10 +13,10 @@ const Command ={
         // body : {"dateadded_inf" :"2020"}
 
 
-        (typeof body.id_commande != "undefined") ?
-            Array.isArray(body.id_commande) ?
-                where.push("id_commande IN (" + body.id_commande.join(",") + ")") :
-                where.push("id_commande =" + body.id_commande) : null;
+        (typeof body.id != "undefined") ?
+            Array.isArray(body.id) ?
+                where.push("id IN (" + body.id.join(",") + ")") :
+                where.push("id =" + body.id) : null;
 
 
 
@@ -62,7 +62,7 @@ const Command ={
     update: function (req, callback) {
         var body = typeof req.body != "undefined" ? req.body : req;
         body = cleanQuery(body);
-        var id_commande = typeof body.id_commande != "undefined" ? body.id_commande : null
+        var id = typeof body.id != "undefined" ? body.id : null
 
 var update = []
 
@@ -75,11 +75,11 @@ typeof body.id_client != "undefined"
 typeof body.status != "undefined"
 ? update.push("status = " + body.status )
 : null;
-       Command.get({id_commande : body.id_commande},function(err,command){
-               if(command.length>0 && id_commande!==null){
+       Command.get({id : body.id},function(err,command){
+               if(command.length>0 && id!==null){
                         
                             return db.query(
-                                "UPDATE tb_commande SET "+update.join(",")+" WHERE id_commande = "+id_commande,
+                                "UPDATE tb_commande SET "+update.join(",")+" WHERE id = "+id,
                                   callback
                               );
                }
@@ -96,7 +96,7 @@ typeof body.status != "undefined"
         var body = typeof req.body != "undefined" ? req.body : req;
     
         return db.query(
-          "DELETE FROM tb_commande WHERE id_commande = " + body.id_commande,
+          "DELETE FROM tb_commande WHERE id = " + body.id,
           callback
         );
       },
