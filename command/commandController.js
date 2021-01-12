@@ -8,8 +8,7 @@ var Command = require('./command')
 router.post("/insert", function(req, res){
     Command.insert(req,function(err , rows){
         if(err){
-            console.log(err)
-        }
+ res.status(400).json(err)        }
         else{
             res.json(rows)
             console.log('insertCommand done')
@@ -20,8 +19,7 @@ router.post("/insert", function(req, res){
 router.post("/", function(req, res){
     Command.get(req,function(err , rows){
         if(err){
-            console.log(err)
-        }
+ res.status(400).json(err)        }
         else{
             res.json(rows)
             console.log('getCommand done')
@@ -31,8 +29,7 @@ router.post("/", function(req, res){
 router.post("/update", function(req, res){
     Command.update(req,function(err , rows){
         if(err){
-            console.log(err)
-        }
+ res.status(400).json(err)        }
         else{
             res.json(rows)
             console.log('getHistoCommand done')
@@ -43,8 +40,7 @@ router.post("/update", function(req, res){
 router.post("/delete", function(req, res){
     Command.delete(req,function(err , rows){
         if(err){
-            console.log(err)
-        }
+ res.status(400).json(err)        }
         else{
             res.json(rows)
             console.log('getHistoCommand done')

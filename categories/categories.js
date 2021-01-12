@@ -1,10 +1,10 @@
 var db = require("../db");
-const { dateNow, cleanQuery } = require("../helpers/functions");
+const { dateNow, cleanQuery, isDef } = require("../helpers/functions");
 const { update } = require("../users/Users");
 
 
 const Categories = {
-
+    //GET
     get: function (req, callback) {
         var body = (typeof req.body != "undefined") ? req.body : req;
         body = cleanQuery(body);
@@ -35,6 +35,52 @@ const Categories = {
             return callback(null, result);
         })
 
+
+    },
+
+    insert: function(req, callback) {
+        var body = (typeof req.body != "undefined") ? req.body : req;
+        body = cleanQuery(body);
+
+        var keys = [];
+        var values = [];
+        for (const [key, value] of Object.entries(body)) {
+            if (value != null) {
+                typeof value == "string" ? values.push("'" + value + "'") : typeof value == "int" ? values.push(value) : values.push("'" + JSON.stringify(value) + "'")
+                keys.push(key);
+            }
+        }
+        return db.query(
+            "INSERT INTO categories (" +
+            keys.join(",") +
+            ") VALUES  (" +
+            values.join(",") +
+            ")",
+            callback
+        );
+    },
+
+    delete: function (req, callback) {
+        var body = typeof req.body != "undefined" ? req.body : req;
+    
+        return db.query(
+          "DELETE FROM categories WHERE id_categorie = '" + body.id_categorie+"'",
+          callback
+        );
+      },
+      //Upadate (body.id_categorie, body.name)
+      update: function (req, callback) {
+        let body = isDef(req.body) ? req.body : req;
+        if (isDef(body.id_categorie)) {
+            let table = []
+            if (isDef(body.name)) table.push("name='" + body.name+ "'")
+            if (table.length > 0) {
+                let query = "UPDATE categories SET " + table.join(',') + " WHERE id_categorie =" + body.id_categorie
+                return db.query(query, callback);
+
+            } else return callback(null, "NOTHING WAS UPDATED")
+
+        } else return callback("ERROR PARAMETERS")
 
     },
 

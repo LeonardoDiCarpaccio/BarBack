@@ -8,7 +8,7 @@ var Carte = require('./cartes')
 router.post("/update", function(req, res){
     Carte.update(req,function(err , rows){
         if(err){
-            console.log(err)
+             res.status(400).json(err)
         }
         else{
             res.json(rows)
@@ -19,7 +19,7 @@ router.post("/update", function(req, res){
 router.post("/", function(req, res){
     Carte.get(req,function(err , rows){
         if(err){
-            console.log(err)
+             res.status(400).json(err)
         }
         else{
             res.json(rows)
@@ -30,7 +30,7 @@ router.post("/", function(req, res){
 router.post("/insert", function(req, res){
     Carte.insert(req,function(err , rows){
         if(err){
-            console.log(err)
+             res.status(400).json(err)
         }
         else{
             res.json(rows)
@@ -41,7 +41,7 @@ router.post("/insert", function(req, res){
 router.post("/delete", function(req, res){
     Carte.delete(req,function(err , rows){
         if(err){
-            console.log(err)
+             res.status(400).json(err)
         }
         else{
             res.json(rows)
