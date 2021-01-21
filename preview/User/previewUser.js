@@ -52,7 +52,7 @@ const PreviewUser = {
                         callback(err, "no bar")
                     }
 
-                    Users.get({ id_user: arrayIdOwner, only: ["id_user,name_institution,role,id_categorie"] }, function (err, users) {
+                    Users.get({ id_user: arrayIdOwner, only: ["id_user,name_institution,role,id_categorie,img"] }, function (err, users) {
                         if (err || users.length === 0) {
                             callback(err, "no bar")
                         } else {
@@ -104,14 +104,11 @@ const PreviewUser = {
                 if (err) return callback(err, 'CANNOT GET CARTES');
                 id_items = res[0].carte
                 if (isDef(id_items) || isDefArray(id_items)) {
-                    console.log('le getitem les doses', id_items)
                     Items.getItems({ id: id_items }, function (err, resItems) {
                         if (err) return callback(err, "error getItems");
-                        console.log("ooooo", resItems);
                         carteObject['cartes'] = {};
                         resItems.forEach((el, i) => {
                             if (isDef(el.id_categorie) && id_cat.indexOf(el.id_categorie) == -1) id_cat.push(el.id_categorie);
-                            console.log('---',i)
                             let objectToInject = {
                                 "nom": el.nom,
                                 "prix": el.prix,
