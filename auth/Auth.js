@@ -9,7 +9,6 @@ var Auth = {
 
 
         var body = req.body
-        console.log()
         db.query("SELECT * FROM user WHERE pseudo = '" + body.pseudo + "' AND password = '" + body.password + "'", callback)
 
     },
@@ -66,16 +65,13 @@ var Auth = {
         }
         if (typeof (body.birthday) !== "undefined") {
             column.push('birthday')
-            moment(body.birthday).format("YYYY-MM-DD")
             values.push(moment(body.birthday).format("YYYY-MM-DD"))
         }
         db.query("SELECT email FROM user WHERE email ='"+body.email+"'",function(err,user){
-                console.log(user)
             if(user.length>0){
                 callback(err,"User already exist")
             }
             else {
-                console.log("INSERT INTO user (" + column.join(",") + ") VALUES ('" + values.join("','") + "')")
                 db.query("INSERT INTO user (" + column.join(",") + ") VALUES ('" + values.join("','") + "')",
                 function (err, response) {
                     console.log("machupichu")
@@ -91,11 +87,9 @@ var Auth = {
                             const dehka = JSON.parse(body.adresse)
                             return db.query("SELECT * FROM tb_ville WHERE ville = '" + dehka.ville + "'", function (err, citys) {
                                 if(citys.length>0){
-                                    console.log(citys)
                                     const fulldehka = JSON.parse(citys[0].id_owner)
                                     fulldehka.array.push({id_owner : response.insertId})
                                     citys[0].id_owner = JSON.stringify(fulldehka) 
-                                    console.log(citys[0].id_owner)
                                     db.query("UPDATE tb_ville SET id_owner = "+JSON.stringify(citys[0].id_owner)+" WHERE ville = '"+ dehka.ville +"'",callback)
                                 }
                                 else{
@@ -124,7 +118,7 @@ var Auth = {
         var body = req.body;
         var where = [];
         console.log("entering in login");
-        console.log("imbody" + body.email);
+        console.log("imbody" , body.email);
         (typeof body.email != "undefined") ?
 
             where.push("email = '" + body.email + "'") :
@@ -136,8 +130,6 @@ var Auth = {
 
         return (where.length > 0) ?
             db.query("SELECT * FROM user WHERE " + where.join(" AND "), callback) : null
-
-
 
 
     },
