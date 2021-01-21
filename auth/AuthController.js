@@ -70,15 +70,6 @@ console.log(row)
       expiresIn: "2h",
     });
 
-console.log(token)
-    const userInfo = {
-      token,
-      id,
-      role
-    }
-
-   
-    
      res.status(200).send(userInfo);  // { auth: true, token: token }
   });
 });
