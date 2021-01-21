@@ -12,7 +12,7 @@ const Detail = require("../../detail/detail");
 const PreviewOwner = {
 
 getCommandbyStatus : function(req, callback) {
-       
+       res ={}
     var body = (typeof req.body != "undefined") ? req.body : req;
     body = cleanQuery(body);
     var id_detail_array = []
@@ -31,7 +31,9 @@ getCommandbyStatus : function(req, callback) {
                         if(err || detail.length == 0){
                             callback(err,"no detail")
                         }else{
-                            callback(null,detail)
+                                res['detail'] = detail[0].detail
+                                res['table'] = detail[0].location
+                            callback(null,res)
                         }
                     })
         }
