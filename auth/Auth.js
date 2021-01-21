@@ -66,8 +66,8 @@ var Auth = {
         }
         if (typeof (body.birthday) !== "undefined") {
             column.push('birthday')
-            console.log(moment(body.birthday).format("YYYY-MM-DD HH:MM:SS"))
-            values.push(body.birthday)
+            moment(body.birthday).format("YYYY-MM-DD")
+            values.push(moment(body.birthday).format("YYYY-MM-DD"))
         }
         db.query("SELECT email FROM user WHERE email ='"+body.email+"'",function(err,user){
                 console.log(user)
