@@ -13,12 +13,24 @@ const Command ={
         // body : {"dateadded_inf" :"2020"}
 
 
-        (typeof body.id != "undefined") ?
-            Array.isArray(body.id) ?
-                where.push("id IN (" + body.id.join(",") + ")") :
-                where.push("id =" + body.id) : null;
-
-
+        (typeof body.id_commande != "undefined") ?
+            Array.isArray(body.id_commande) ?
+                where.push("id_commande IN (" + body.id_commande.join(",") + ")") :
+                where.push("id_commande =" + body.id_commande) : null;
+            
+            
+                (typeof body.id_owner != "undefined") ?
+                Array.isArray(body.id_owner) ?
+                    where.push("id_owner IN (" + body.id_owner.join(",") + ")") :
+                    where.push("id_owner =" + body.id_owner) : null;
+    
+    
+                    (typeof body.id_client != "undefined") ?
+                    Array.isArray(body.id_client) ?
+                        where.push("id_client IN (" + body.id_client.join(",") + ")") :
+                        where.push("id_client =" + body.id_client) : null;
+        
+        
 
         (where.length > 0) ? db.query("SELECT " + target + " FROM tb_commande WHERE " + where.join(" AND "), function (err, rows) {
             var result = (typeof rows != "undefined") ? Object.values(JSON.parse(JSON.stringify(rows))) : [];

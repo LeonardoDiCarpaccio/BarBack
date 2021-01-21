@@ -4,6 +4,7 @@ const { update } = require("../users/Users");
 
 const Carte = {
     get: function (req, callback) {
+        console.log("get pasesd")
         var body = (typeof req.body != "undefined") ? req.body : req;
         body = cleanQuery(body);
 

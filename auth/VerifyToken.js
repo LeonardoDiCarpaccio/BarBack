@@ -4,6 +4,7 @@ var config = require('../config');
 function verifyToken(req, res, next) {
   console.log(req.headers)
   var token = req.headers['x-access-token'];
+  console.log(token)
   if (!token)
     return res.status(401).send({ auth: false, message: 'No token provided.' });
     
@@ -13,7 +14,7 @@ function verifyToken(req, res, next) {
     return res.status(500).send({ auth: false, message: 'Failed to authenticate token.' });
 
     req.role = decoded.role
-    req.userId = decoded.userId;k
+    req.userId = decoded.userId
     next();
   });
 
