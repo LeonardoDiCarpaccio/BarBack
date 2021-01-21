@@ -17,81 +17,90 @@ var Users = {
 
 
     (typeof body.id_user != "undefined") ?
-        Array.isArray(body.id_user) ?
-            where.push("id_user IN (" + body.id_user.join(",") + ")") :
-            where.push("id_user =" + body.id_user) : null;
+      Array.isArray(body.id_user) ?
+        where.push("id_user IN (" + body.id_user.join(",") + ")") :
+        where.push("id_user =" + body.id_user) : null;
 
 
     (where.length > 0) ? db.query("SELECT " + target + " FROM user WHERE " + where.join(" AND "), function (err, rows) {
-        var result = (typeof rows != "undefined") ? Object.values(JSON.parse(JSON.stringify(rows))) : [];
+      var result = (typeof rows != "undefined") ? Object.values(JSON.parse(JSON.stringify(rows))) : [];
 
-        return callback(null, result);
+      return callback(null, result);
     }) : db.query("SELECT " + target + " FROM user ", function (err, rows) {
-        var result = (typeof rows != "undefined") ? Object.values(JSON.parse(JSON.stringify(rows))) : [];
-   
+      var result = (typeof rows != "undefined") ? Object.values(JSON.parse(JSON.stringify(rows))) : [];
 
-        return callback(null, result);
+
+      return callback(null, result);
     })
 
 
-},
+  },
   insert: function (req, callback) {
-    req = functions.cleanQuery(req);
-    let date = functions.dateNow();
+    var body = (typeof (req.body) != 'undefined') ? req.body : req;
+    body = cleanQuery(body)
+    body.password = bcrypt.hashSync(body.password, 8);
+    var keys = [];
+    var values = [];
 
-    var hashedPassword = bcrypt.hashSync(req.password, 8);
+    for (const [key, value] of Object.entries(body)) {
+      if (value != null) {
+        typeof value == "string"
+          ? values.push("'" + value + "'")
+          : values.push("'" + JSON.stringify(value) + "'");
+          typeof value == 
+        keys.push(key);
+      }
+    }
 
+    keys.push("date_added");
+    values.push("'"+dateNow()+"'");
+   
     return db.query(
-      "INSERT INTO users (lastName,firstName,email,password,dateadded) VALUES ('" +
-        req.lastName +
-        "','"  +
-        req.firstName +
-        "','"+
-        req.email +
-        "','" +
-        hashedPassword +
-        "'," +
-        date +
-        "')",
+      "INSERT INTO user (" +
+      keys.join(",") +
+      ") VALUES  (" +
+      values.join(",") +
+      ")",
       callback
     );
   },
-  update : function(req,callback){
-    let body=req.body
+ 
+  update: function (req, callback) {
+    let body = req.body
     var where = [];
     req = functions.cleanQuery(req);
-      (typeof body.password!="undefined") ?
-        where.push("password = '"+body.password+"'"):null;
+    (typeof body.password != "undefined") ?
+      where.push("password = '" + body.password + "'") : null;
 
-      (typeof body.email!="undefined") ?
-      where.push("email = '"+body.email+"'"):null;
+    (typeof body.email != "undefined") ?
+      where.push("email = '" + body.email + "'") : null;
 
-      (typeof body.firstname!="undefined") ?
-      where.push("firstname = '"+body.firstname+"'"):null;
-      
-      (typeof body.lastname!="undefined") ?
-      where.push("lastname = '"+body.lastname+"'"):null;
-      
-      return(where.length>0) ? db.query("UPDATE users SET "+where.join( "AND" )+"WHERE id = "+body.id,callback) :
-      db.query("UPDATE users SET "+where+" WHERE id = "+body.id,callback);
+    (typeof body.firstname != "undefined") ?
+      where.push("firstname = '" + body.firstname + "'") : null;
+
+    (typeof body.lastname != "undefined") ?
+      where.push("lastname = '" + body.lastname + "'") : null;
+
+    return (where.length > 0) ? db.query("UPDATE users SET " + where.join("AND") + "WHERE id = " + body.id, callback) :
+      db.query("UPDATE users SET " + where + " WHERE id = " + body.id, callback);
   },
 
-  delete : function(req,callback){
-        let body=req.body
-        var where = [];
-        req = functions.cleanQuery(req);
+  delete: function (req, callback) {
+    let body = req.body
+    var where = [];
+    req = functions.cleanQuery(req);
 
-        (typeof body.firstname != "undefined") ?
-        Array.isArray(body.firstname)?
-        where.push("firstname IN ('"+ body.firstname.join("','") +"')") : 
-        where.push("firstname = '"+body.firstname+"'") :
-        null;
-console.log("DELETE FROM users WHERE "+where.join("AND"));
-console.log(where)
+    (typeof body.firstname != "undefined") ?
+      Array.isArray(body.firstname) ?
+        where.push("firstname IN ('" + body.firstname.join("','") + "')") :
+        where.push("firstname = '" + body.firstname + "'") :
+      null;
+    console.log("DELETE FROM users WHERE " + where.join("AND"));
+    console.log(where)
 
-        return(where.length>0)? db.query("DELETE FROM users WHERE "+where.join("AND"),callback):null;
-         
-        
+    return (where.length > 0) ? db.query("DELETE FROM users WHERE " + where.join("AND"), callback) : null;
+
+
 
   },
 

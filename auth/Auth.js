@@ -1,6 +1,6 @@
 var db = require("../db");
 const { dateNow } = require("../helpers/functions");
-
+var moment = require("moment")
 
 var Auth = {
 
@@ -66,17 +66,19 @@ var Auth = {
         }
         if (typeof (body.birthday) !== "undefined") {
             column.push('birthday')
+            console.log(moment(body.birthday).format("YYYY-MM-DD HH:MM:SS"))
             values.push(body.birthday)
         }
         db.query("SELECT email FROM user WHERE email ='"+body.email+"'",function(err,user){
                 console.log(user)
-                console.log("length"+user.length)
             if(user.length>0){
                 callback(err,"User already exist")
             }
             else {
+                console.log("INSERT INTO user (" + column.join(",") + ") VALUES ('" + values.join("','") + "')")
                 db.query("INSERT INTO user (" + column.join(",") + ") VALUES ('" + values.join("','") + "')",
                 function (err, response) {
+                    console.log("machupichu")
                     if (err) {
                         callback(err, "can not insert")
                     }

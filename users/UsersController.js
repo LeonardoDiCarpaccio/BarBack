@@ -32,6 +32,17 @@ router.delete('/delete',function (req,res){
     })
 })
 
+router.post('/insert',function (req,res){
+    Users.insert(req, function(err,rows){
+        if(err){
+            res.status(400).json(err)
+        }
+        else{
+            res.json(rows)
+        }
+    })
+})
+
 router.post('/update',function (req,res){
     Users.update(req, function(err,rows){
         if(err){
