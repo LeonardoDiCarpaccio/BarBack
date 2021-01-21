@@ -5,25 +5,35 @@ const Items = require('../../items/items');
 var db = require("../../db");
 const { dateNow, cleanQuery, TableJsonId, TableJsonIdSpecificKey, isDef, isDefArray } = require("../../helpers/functions");
 const Users = require("../../users/Users");
-const Command = require("../../command/Command")
+const Command = require("../../command/Command");
+const Detail = require("../../detail/detail");
 
 
 const PreviewOwner = {
 
 getCommandbyStatus : function(req, callback) {
-
+       
     var body = (typeof req.body != "undefined") ? req.body : req;
     body = cleanQuery(body);
-    var status = typeof body.status != "undefined" ? body.status : null
-    var id_owner = typeof body.id_owner != "undefined" ? body.id_owner : null
-    var id_user = typeof body.id_user != "undefined" ? body.id_user : null
-
-    Command.get({status : status, id_owner : id_owner, id_client : id_user}, function(err, command){
-        if(command.length === 0){
+    var id_detail_array = []
+    Command.get(body, function(err, command){
+        if(command.length === 0 || err){
             callback(null, "no command or worng id provided")
         }
         else{
-            callback(null, command)
+                    command.forEach(element => {
+                        if(id_detail_array.find((el)=>el==element.id_detail)===undefined){
+                                    id_detail_array.push(element.id_detail)
+                        }
+                    });
+
+                    Detail.getDetail({id : id_detail_array},function(err,detail){
+                        if(err || detail.length == 0){
+                            callback(err,"no detail")
+                        }else{
+                            callback(null,detail)
+                        }
+                    })
         }
     })
 
