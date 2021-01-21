@@ -15,9 +15,26 @@ var Detail = {
             }
 
             if (table.length > 0)
-                return db.query('SELECT ' + target + ' FROM detail WHERE ' + table.join(" AND "), callback);
+                return db.query('SELECT ' + target + ' FROM detail WHERE ' + table.join(" AND "), function(err,detail){
+                    var result = (typeof detail != "undefined") ? Object.values(JSON.parse(JSON.stringify(detail))) : [];
+                    result.forEach(element => {
+                            typeof element.detail != "undefined" ? element.detail = JSON.parse(element.detail) : null
+                            typeof element.location != "undefined" ? element.location = JSON.parse(element.location) : null
+
+                    });
+                    callback(null,result)
+                });
             else
-                return db.query('SELECT ' + target + ' FROM detail', callback);
+                return db.query('SELECT ' + target + ' FROM detail',function(err,detail){
+                    var result = (typeof detail != "undefined") ? Object.values(JSON.parse(JSON.stringify(detail))) : [];
+                    result.forEach(element => {
+                        typeof element.detail != "undefined" ? element.detail = JSON.parse(element.detail) : null
+                        typeof element.location != "undefined" ? element.location = JSON.parse(element.location) : null
+
+                });
+                    callback(null,result)
+
+                });
         } else {
             return callback('ERROR PARAMETERS');
         }
