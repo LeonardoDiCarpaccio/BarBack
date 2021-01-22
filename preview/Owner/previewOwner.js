@@ -1,11 +1,11 @@
-const Categories = require("../../categories/categories");
+const Categories = require("../../category/category");
 const City = require("../../city/city");
-const Cartes = require('../../cartes/cartes');
+const Cartes = require('../../cartes/menu');
 const Items = require('../../items/items');
 var db = require("../../db");
 const { dateNow, cleanQuery, TableJsonId, TableJsonIdSpecificKey, isDef, isDefArray } = require("../../helpers/functions");
 const Users = require("../../users/Users");
-const Command = require("../../command/Command");
+const Command = require("../../order/order");
 const Detail = require("../../detail/detail");
 
 
@@ -17,6 +17,7 @@ getCommandbyStatus : function(req, callback) {
     body = cleanQuery(body);
     var id_detail_array = []
     Command.get(body, function(err, command){
+        console.log(command)
         if(command.length === 0 || err){
             callback(null, "no command or worng id provided")
         }
@@ -28,11 +29,11 @@ getCommandbyStatus : function(req, callback) {
                     });
 
                     Detail.getDetail({id : id_detail_array},function(err,detail){
+                        console.log('detail',detail)
                         if(err || detail.length == 0){
                             callback(err,"no detail")
                         }else{
-                                res['detail'] = detail[0].detail
-                                res['table'] = detail[0].location
+                           res['detail']=[...detail]
                             callback(null,res)
                         }
                     })

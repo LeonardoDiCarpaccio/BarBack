@@ -54,9 +54,9 @@ var Items = {
         console.log(body, isDef(body.id))
         if (isDef(body.id)) {
             let table = []
-            if (isDef(body.nom)) table.push("nom='" + body.nom + "'")
-            if (isDef(body.prix)) table.push("prix='" + body.prix + "'")
-            if (isDef(body.id_categorie)) table.push("id_categorie='" + body.id_categorie + "'")
+            if (isDef(body.nom)) table.push("name='" + body.name + "'")
+            if (isDef(body.prix)) table.push("price=" + body.price)
+            if (isDef(body.id_category)) table.push("id_category=" + body.id_category)
             if (isDef(body.description)) table.push("description='" + body.description + "'")
             if (isDef(body.img)) table.push("img='" + body.img + "'")
             if (table.length > 0) {

@@ -7,8 +7,8 @@ router.use(bodyParser.urlencoded({ extended: false }));
 router.use(bodyParser.json());
 
 
-router.post("/getTownFiltered", function(req, res){
-    PreviewUser.getTownFiltered(req,function(err , rows){
+router.post("/getCityFiltered", function(req, res){
+    PreviewUser.getCityFiltered(req,function(err , rows){
         if(err){
             res.status(400).json(err);        }
         else{
@@ -18,7 +18,7 @@ router.post("/getTownFiltered", function(req, res){
     });
 });
 
-router.post("/previewOwnerListByTown", function(req, res){
+router.post("/previewOwnerListByCity", function(req, res){
     PreviewUser.previewOwnerListByTown(req,function(err , rows){
         if(err){
             res.status(400).json(err);        

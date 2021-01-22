@@ -19,7 +19,7 @@ const City ={
 
 
 
-        (where.length > 0) ? db.query("SELECT " + target + " FROM tb_ville WHERE " + where.join(" AND "), function (err, rows) {
+        (where.length > 0) ? db.query("SELECT " + target + " FROM tb_city WHERE " + where.join(" AND "), function (err, rows) {
             var result = (typeof rows != "undefined") ? Object.values(JSON.parse(JSON.stringify(rows))) : [];
 
             result.forEach((el)=>{
@@ -27,7 +27,7 @@ const City ={
                 
             })
             return callback(null, result);
-        }) : db.query("SELECT " + target + " FROM tb_ville ", function (err, rows) {
+        }) : db.query("SELECT " + target + " FROM tb_city ", function (err, rows) {
             var result = (typeof rows != "undefined") ? Object.values(JSON.parse(JSON.stringify(rows))) : [];
             result.forEach((el)=>{
                 typeof el.id_owner != "undefined" ? el.id_owner = JSON.parse(el.id_owner) : null;
@@ -57,7 +57,7 @@ const City ={
         }
 
         return db.query(
-            "INSERT INTO tb_ville (" +
+            "INSERT INTO tb_city (" +
             keys.join(",") +
             ") VALUES  (" +
             values.join(",") +
@@ -89,9 +89,9 @@ const City ={
                         }
                     }
                 })
-                console.log( "UPDATE tb_ville SET id_owner = '"+array+"' WHERE ville = '"+ville+"'")
+                console.log( "UPDATE tb_city SET id_owner = '"+array+"' WHERE city = '"+ville+"'")
                 return db.query(
-                                        "UPDATE tb_ville SET id_owner = '"+JSON.stringify(array)+"' WHERE ville = '"+ville+"'",
+                                        "UPDATE tb_city SET id_owner = '"+JSON.stringify(array)+"' WHERE city = '"+ville+"'",
                                           callback
                                       );
             }    
@@ -108,7 +108,7 @@ const City ={
         var body = typeof req.body != "undefined" ? req.body : req;
     
         return db.query(
-          "DELETE FROM tb_ville WHERE ville = '" + body.ville+"'",
+          "DELETE FROM tb_city WHERE city = '" + body.ville+"'",
           callback
         );
       },
