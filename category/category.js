@@ -3,7 +3,7 @@ const { dateNow, cleanQuery, isDef } = require("../helpers/functions");
 const { update } = require("../users/Users");
 
 
-const Categories = {
+const Category = {
     //GET
     get: function (req, callback) {
         var body = (typeof req.body != "undefined") ? req.body : req;
@@ -68,7 +68,7 @@ const Categories = {
           callback
         );
       },
-      //Upadate (body.id_categorie, body.name)
+      //Update (body.id_category, body.name)
       update: function (req, callback) {
         let body = isDef(req.body) ? req.body : req;
         if (isDef(body.id)) {
@@ -86,4 +86,4 @@ const Categories = {
 
 }
 
-module.exports = Categories
+module.exports = Category

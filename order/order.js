@@ -1,7 +1,7 @@
 var db = require("../db");
 const { dateNow,cleanQuery } = require("../helpers/functions");
 
-const Command ={
+const Order ={
 
     get: function (req, callback) {
         var body = (typeof req.body != "undefined") ? req.body : req;
@@ -34,12 +34,12 @@ const Command ={
                     Array.isArray(body.id_client) ?
                         where.push("id_client IN (" + body.id_client.join(",") + ")") :
                         where.push("id_client =" + body.id_client) : null;
-                            console.log("SELECT " + target + " FROM tb_commande WHERE " + where.join(" AND "));
-        (where.length > 0) ? db.query("SELECT " + target + " FROM order WHERE " + where.join(" AND "), function (err, rows) {
+                            console.log("SELECT " + target + " FROM tb_order WHERE " + where.join(" AND "));
+        (where.length > 0) ? db.query("SELECT " + target + " FROM tb_order WHERE " + where.join(" AND "), function (err, rows) {
             var result = (typeof rows != "undefined") ? Object.values(JSON.parse(JSON.stringify(rows))) : [];
             return callback(null, result);
         
-        }) : db.query("SELECT " + target + " FROM order ", function (err, rows) {
+        }) : db.query("SELECT " + target + " FROM tb_order ", function (err, rows) {
             var result = (typeof rows != "undefined") ? Object.values(JSON.parse(JSON.stringify(rows))) : [];
             
         return callback(null, result);
@@ -66,7 +66,7 @@ const Command ={
         values.push("'"+dateNow()+"'");
       
         return db.query(
-            "INSERT INTO order (" +
+            "INSERT INTO FROM tb_order (" +
             keys.join(",") +
             ") VALUES  (" +
             values.join(",") +
@@ -91,11 +91,11 @@ typeof body.id_client != "undefined"
 typeof body.status != "undefined"
 ? update.push("status = " + body.status )
 : null;
-       Command.get({id : body.id},function(err,command){
-               if(command.length>0 && id!==null){
+       Order.get({id : body.id},function(err,Order){
+               if(Order.length>0 && id!==null){
                         
                             return db.query(
-                                "UPDATE order SET "+update.join(",")+" WHERE id = "+id,
+                                "UPDATE FROM tb_order SET "+update.join(",")+" WHERE id = "+id,
                                   callback
                               );
                }
@@ -112,10 +112,10 @@ typeof body.status != "undefined"
         var body = typeof req.body != "undefined" ? req.body : req;
     
         return db.query(
-          "DELETE FROM order WHERE id = " + body.id,
+          "DELETE FROM tb_order WHERE id = " + body.id,
           callback
         );
       },
 
 }
-module.exports = Command
+module.exports = Order

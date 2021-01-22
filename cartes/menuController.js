@@ -3,49 +3,45 @@ var router = express.Router();
 var bodyParser = require("body-parser");
 router.use(bodyParser.urlencoded({ extended: false }));
 router.use(bodyParser.json());
-var Carte = require('./menu')
+var Menu = require('./menu')
 
 router.post("/update", function(req, res){
-    Carte.update(req,function(err , rows){
+    Menu.update(req,function(err , rows){
         if(err){
              res.status(400).json(err)
         }
         else{
             res.json(rows)
-            console.log('getCarte done')
         }
     })
 })
 router.post("/", function(req, res){
-    Carte.get(req,function(err , rows){
+    Menu.get(req,function(err , rows){
         if(err){
              res.status(400).json(err)
         }
         else{
             res.json(rows)
-            console.log('getCarte done')
         }
     })
 })
 router.post("/insert", function(req, res){
-    Carte.insert(req,function(err , rows){
+    Menu.insert(req,function(err , rows){
         if(err){
              res.status(400).json(err)
         }
         else{
             res.json(rows)
-            console.log('getCarte done')
         }
     })
 })
 router.post("/delete", function(req, res){
-    Carte.delete(req,function(err , rows){
+    Menu.delete(req,function(err , rows){
         if(err){
              res.status(400).json(err)
         }
         else{
             res.json(rows)
-            console.log('getCarte done')
         }
     })
 })
