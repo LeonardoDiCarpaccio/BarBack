@@ -22,7 +22,7 @@ const Categories = {
 
 
         console.log("SELECT " + target + " FROM category WHERE " + where.join(" AND "));
-        (where.length > 0) ? db.query("SELECT " + target + " FROM categories WHERE " + where.join(" AND "), function (err, rows) {
+        (where.length > 0) ? db.query("SELECT " + target + " FROM category WHERE " + where.join(" AND "), function (err, rows) {
             console.log(rows)
             var result = (typeof rows != "undefined") ? Object.values(JSON.parse(JSON.stringify(rows))) : [];
 

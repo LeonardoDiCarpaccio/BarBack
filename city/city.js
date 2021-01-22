@@ -12,13 +12,13 @@ const City ={
         // body : {"dateadded_inf" :"2020"}
 
 
-        (typeof body.ville != "undefined") ?
-            Array.isArray(body.ville) ?
-                where.push("ville IN (" + body.ville.join(",") + ")") :
-                where.push("ville = '" + body.ville+"'") : null;
+        (typeof body.city != "undefined") ?
+            Array.isArray(body.city) ?
+                where.push("city IN (" + body.city.join(",") + ")") :
+                where.push("city = '" + body.city+"'") : null;
 
 
-
+            console.log("SELECT " + target + " FROM tb_city WHERE " + where.join(" AND "));
         (where.length > 0) ? db.query("SELECT " + target + " FROM tb_city WHERE " + where.join(" AND "), function (err, rows) {
             var result = (typeof rows != "undefined") ? Object.values(JSON.parse(JSON.stringify(rows))) : [];
 

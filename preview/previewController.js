@@ -30,7 +30,7 @@ router.post("/previewOwnerListByCity", function(req, res){
     });
 });
 
-router.post("/getCartesByOwner", function(req, res){
+router.post("/getMenuByOwner", function(req, res){
     PreviewUser.getCarteByOwner(req, function (err, rows){
         if(err) res.status(400).json(err);
         else res.json(rows)

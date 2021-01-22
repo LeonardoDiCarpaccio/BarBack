@@ -37,6 +37,7 @@ const PreviewUser = {
         var id_category = []
         if (city !== null) {
             City.get({ city: city, only: ["id_owner"] }, function (err, owner) {
+                console.log("owner",owner)
                 if (err || owner.length === 0) { callback(err, "no bar") }
 
                 else {
@@ -74,6 +75,7 @@ const PreviewUser = {
                                     var obj = {}
                                     res["category"] = TableJsonIdSpecificKey(obj, category, "id", "name")
                                     res["owner"] = users
+                                    console.log("res",res)
                                     callback(null, res)
                                 }
                             })
