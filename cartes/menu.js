@@ -19,19 +19,19 @@ const Carte = {
                 where.push("id_owner =" + body.id_owner) : null;
 
 
-        console.log("SELECT " + target + " FROM tb_carte WHERE " + where.join(" AND "));
-        (where.length > 0) ? db.query("SELECT " + target + " FROM tb_carte WHERE " + where.join(" AND "), function (err, rows) {
+        console.log("SELECT " + target + " FROM tb_menu WHERE " + where.join(" AND "));
+        (where.length > 0) ? db.query("SELECT " + target + " FROM tb_menu WHERE " + where.join(" AND "), function (err, rows) {
             var result = (typeof rows != "undefined") ? Object.values(JSON.parse(JSON.stringify(rows))) : [];
 
             result.forEach((el) => {
-                typeof el.carte != "undefined" ? el.carte = JSON.parse(el.carte) : null;
+                typeof el.menu != "undefined" ? el.menu = JSON.parse(el.menu) : null;
 
             })
             return callback(null, result);
-        }) : db.query("SELECT " + target + " FROM tb_carte ", function (err, rows) {
+        }) : db.query("SELECT " + target + " FROM tb_menu ", function (err, rows) {
             var result = (typeof rows != "undefined") ? Object.values(JSON.parse(JSON.stringify(rows))) : [];
             result.forEach((el) => {
-                typeof el.carte != "undefined" ? el.carte = JSON.parse(el.carte) : null;
+                typeof el.menu != "undefined" ? el.menu = JSON.parse(el.menu) : null;
 
             })
 
@@ -57,7 +57,7 @@ const Carte = {
         }
 
         return db.query(
-            "INSERT INTO tb_carte (" +
+            "INSERT INTO tb_menu (" +
             keys.join(",") +
             ") VALUES  (" +
             values.join(",") +
@@ -89,7 +89,7 @@ const Carte = {
                         }
                     })
                     return db.query(
-                        "UPDATE tb_carte SET carte = '" + JSON.stringify(array) + "' WHERE id_owner = " + id_user,
+                        "UPDATE tb_carte SET menu = '" + JSON.stringify(array) + "' WHERE id_owner = " + id_user,
                         callback
                     );
                 }
@@ -105,7 +105,7 @@ const Carte = {
         var body = typeof req.body != "undefined" ? req.body : req;
 
         return db.query(
-            "DELETE FROM tb_carte WHERE id = " + body.id,
+            "DELETE FROM tb_menu WHERE id = " + body.id,
             callback
         );
     },

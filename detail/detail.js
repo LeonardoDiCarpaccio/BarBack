@@ -43,6 +43,7 @@ var Detail = {
     insert: function (req, callback) {
         var body = typeof req.body != "undefined" ? req.body : req;
         body = cleanQuery(body);
+        console.log(body)
 
         var keys = [];
         var values = [];
@@ -55,7 +56,11 @@ var Detail = {
                 keys.push(key);
             }
         }
-
+        console.log(   "INSERT INTO detail (" +
+        keys.join(",") +
+        ") VALUES  (" +
+        values.join(",") +
+        ")")
         return db.query(
             "INSERT INTO detail (" +
             keys.join(",") +

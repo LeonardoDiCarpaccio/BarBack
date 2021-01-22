@@ -20,10 +20,10 @@ const Command ={
                 where.push("status IN (" + body.status.join(",") + ")") :
                 where.push("status =" + body.status) : null;
         
-        (typeof body.id_commande != "undefined") ?
-            Array.isArray(body.id_commande) ?
-                where.push("id_commande IN (" + body.id_commande.join(",") + ")") :
-                where.push("id_commande =" + body.id_commande) : null;
+        (typeof body.id != "undefined") ?
+            Array.isArray(body.id) ?
+                where.push("id IN (" + body.id.join(",") + ")") :
+                where.push("id =" + body.id) : null;
             
             
                 (typeof body.id_owner != "undefined") ?
@@ -35,11 +35,11 @@ const Command ={
                         where.push("id_client IN (" + body.id_client.join(",") + ")") :
                         where.push("id_client =" + body.id_client) : null;
                             console.log("SELECT " + target + " FROM tb_commande WHERE " + where.join(" AND "));
-        (where.length > 0) ? db.query("SELECT " + target + " FROM tb_commande WHERE " + where.join(" AND "), function (err, rows) {
+        (where.length > 0) ? db.query("SELECT " + target + " FROM order WHERE " + where.join(" AND "), function (err, rows) {
             var result = (typeof rows != "undefined") ? Object.values(JSON.parse(JSON.stringify(rows))) : [];
             return callback(null, result);
         
-        }) : db.query("SELECT " + target + " FROM tb_commande ", function (err, rows) {
+        }) : db.query("SELECT " + target + " FROM order ", function (err, rows) {
             var result = (typeof rows != "undefined") ? Object.values(JSON.parse(JSON.stringify(rows))) : [];
             
         return callback(null, result);
@@ -64,8 +64,9 @@ const Command ={
         }
         keys.push("date");
         values.push("'"+dateNow()+"'");
+      
         return db.query(
-            "INSERT INTO tb_commande (" +
+            "INSERT INTO order (" +
             keys.join(",") +
             ") VALUES  (" +
             values.join(",") +
@@ -94,7 +95,7 @@ typeof body.status != "undefined"
                if(command.length>0 && id!==null){
                         
                             return db.query(
-                                "UPDATE tb_commande SET "+update.join(",")+" WHERE id = "+id,
+                                "UPDATE order SET "+update.join(",")+" WHERE id = "+id,
                                   callback
                               );
                }
@@ -111,7 +112,7 @@ typeof body.status != "undefined"
         var body = typeof req.body != "undefined" ? req.body : req;
     
         return db.query(
-          "DELETE FROM tb_commande WHERE id = " + body.id,
+          "DELETE FROM order WHERE id = " + body.id,
           callback
         );
       },

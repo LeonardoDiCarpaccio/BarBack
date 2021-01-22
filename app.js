@@ -50,13 +50,13 @@ app.use(slug +'/action', PreviewController);
 var mailController = require('./mails/mailController')
 app.use(slug + '/mails', mailController);
 
-var carteController = require('./cartes/carteController')
+var carteController = require('./cartes/menuController')
 app.use(slug + '/cartes', carteController);
 
 var cityController = require('./city/cityController')
 app.use(slug + '/city', cityController);
 
-var commandController = require('./command/commandController')
+var commandController = require('./order/orderController')
 app.use(slug + '/command', commandController)
 
 var detailController = require('./detail/detailController')
@@ -65,7 +65,7 @@ app.use(slug + '/detail', detailController)
 var itemsController = require('./items/itemsController')
 app.use(slug + '/item', itemsController)
 
-var categoriesController = require('./categories/categoriesController')
+var categoriesController = require('./category/categoryController')
 app.use(slug + '/categories', categoriesController)
 
 module.exports = app;

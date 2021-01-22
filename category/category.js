@@ -15,20 +15,20 @@ const Categories = {
         // body : {"dateadded_inf" :"2020"}
 
 
-        (typeof body.id_categorie != "undefined") ?
-            Array.isArray(body.id_categorie) ?
-                where.push("id_categorie IN (" + body.id_categorie.join(",") + ")") :
-                where.push("id_categorie =" + body.id_categorie) : null;
+        (typeof body.id != "undefined") ?
+            Array.isArray(body.id) ?
+                where.push("id IN (" + body.id.join(",") + ")") :
+                where.push("id =" + body.id) : null;
 
 
-        console.log("SELECT " + target + " FROM categories WHERE " + where.join(" AND "));
+        console.log("SELECT " + target + " FROM category WHERE " + where.join(" AND "));
         (where.length > 0) ? db.query("SELECT " + target + " FROM categories WHERE " + where.join(" AND "), function (err, rows) {
             console.log(rows)
             var result = (typeof rows != "undefined") ? Object.values(JSON.parse(JSON.stringify(rows))) : [];
 
         
             return callback(null, result);
-        }) : db.query("SELECT " + target + " FROM categories ", function (err, rows) {
+        }) : db.query("SELECT " + target + " FROM category ", function (err, rows) {
             var result = (typeof rows != "undefined") ? Object.values(JSON.parse(JSON.stringify(rows))) : [];
           
 
@@ -51,7 +51,7 @@ const Categories = {
             }
         }
         return db.query(
-            "INSERT INTO categories (" +
+            "INSERT INTO category (" +
             keys.join(",") +
             ") VALUES  (" +
             values.join(",") +
@@ -64,18 +64,18 @@ const Categories = {
         var body = typeof req.body != "undefined" ? req.body : req;
     
         return db.query(
-          "DELETE FROM categories WHERE id_categorie = '" + body.id_categorie+"'",
+          "DELETE FROM category WHERE id = " + body.id,
           callback
         );
       },
       //Upadate (body.id_categorie, body.name)
       update: function (req, callback) {
         let body = isDef(req.body) ? req.body : req;
-        if (isDef(body.id_categorie)) {
+        if (isDef(body.id)) {
             let table = []
             if (isDef(body.name)) table.push("name='" + body.name+ "'")
             if (table.length > 0) {
-                let query = "UPDATE categories SET " + table.join(',') + " WHERE id_categorie =" + body.id_categorie
+                let query = "UPDATE category SET " + table.join(',') + " WHERE id =" + body.id
                 return db.query(query, callback);
 
             } else return callback(null, "NOTHING WAS UPDATED")

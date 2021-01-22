@@ -1,6 +1,6 @@
-const Categories = require("../../categories/categories");
+const category = require("../../category/category");
 const City = require("../../city/city");
-const Cartes = require('../../cartes/cartes');
+const Cartes = require('../../cartes/menu');
 const Items = require('../../items/items');
 var db = require("../../db");
 const { dateNow, cleanQuery, TableJsonId, TableJsonIdSpecificKey, isDef, isDefArray } = require("../../helpers/functions");
@@ -8,20 +8,20 @@ const Users = require("../../users/Users");
 
 const PreviewUser = {
 
-    getTownFiltered: function (req, callback) {
+    getCityFiltered: function (req, callback) {
         var body = (typeof req.body != "undefined") ? req.body : req;
         body = cleanQuery(body);
         var where = []
 
         if (
-            typeof body.ville != "undefined" &&
-            body.ville.length > 0
+            typeof body.city != "undefined" &&
+            body.city.length > 0
         ) {
 
-            where.push("ville LIKE '" + body.ville + "%'");
+            where.push("city LIKE '" + body.city + "%'");
 
         }
-        db.query("SELECT ville FROM tb_ville WHERE " + where, function (err, rows) {
+        db.query("SELECT city FROM tb_city WHERE " + where, function (err, rows) {
             if (err || rows.length === 0) { callback(err, "no town found") }
             else {
                 callback(null, rows)
@@ -31,12 +31,12 @@ const PreviewUser = {
     previewOwnerListByTown: function (req, callback) {
         var body = (typeof req.body != "undefined") ? req.body : req;
         body = cleanQuery(body);
-        var ville = typeof body.ville != "undefined" ? body.ville : null
+        var city = typeof body.city != "undefined" ? body.city : null
         var res = {}
         var arrayIdOwner = []
-        var id_categorie = []
-        if (ville !== null) {
-            City.get({ ville: ville, only: ["id_owner"] }, function (err, owner) {
+        var id_category = []
+        if (city !== null) {
+            City.get({ city: city, only: ["id_owner"] }, function (err, owner) {
                 if (err || owner.length === 0) { callback(err, "no bar") }
 
                 else {
@@ -52,7 +52,7 @@ const PreviewUser = {
                         callback(err, "no bar")
                     }
 
-                    Users.get({ id_user: arrayIdOwner, only: ["id_user,name_institution,role,id_categorie,img"] }, function (err, users) {
+                    Users.get({ id_user: arrayIdOwner, only: ["id_user,name_institution,role,id_category,img"] }, function (err, users) {
                         if (err || users.length === 0) {
                             callback(err, "no bar")
                         } else {
@@ -63,16 +63,16 @@ const PreviewUser = {
                                 if (el.role !== 2) {
                                     users.splice(index, 1)
                                 } else {
-                                    id_categorie.push(el.id_categorie)
+                                    id_category.push(el.id_category)
                                 }
                             })
-                            Categories.get({ id_categorie: id_categorie }, function (err, categories) {
-                                console.log(categories)
-                                if (err || categories.length === 0) { callback(err, "no categories") }
+                            category.get({ id: id_category }, function (err, category) {
+                                console.log(category)
+                                if (err || category.length === 0) { callback(err, "no category") }
                                 else {
-                                    console.log(categories)
+                                    console.log(category)
                                     var obj = {}
-                                    res["categories"] = TableJsonIdSpecificKey(obj, categories, "id_categorie", "name")
+                                    res["category"] = TableJsonIdSpecificKey(obj, category, "id", "name")
                                     res["owner"] = users
                                     callback(null, res)
                                 }
@@ -101,31 +101,33 @@ const PreviewUser = {
         let carteObject = {};
         if (isDef(body.id_owner) && !Array.isArray(body.id_owner)) {
             Cartes.get({ id_owner: body.id_owner }, function (err, res) {
+                console.log("cartes",res)
                 if (err) return callback(err, 'CANNOT GET CARTES');
-                id_items = res[0].carte
+                id_items = res[0].menu
                 if (isDef(id_items) || isDefArray(id_items)) {
                     Items.getItems({ id: id_items }, function (err, resItems) {
                         if (err) return callback(err, "error getItems");
                         carteObject['cartes'] = {};
                         resItems.forEach((el, i) => {
-                            if (isDef(el.id_categorie) && id_cat.indexOf(el.id_categorie) == -1) id_cat.push(el.id_categorie);
+                            if (isDef(el.id_category) && id_cat.indexOf(el.id_category) == -1) id_cat.push(el.id_category);
                             let objectToInject = {
-                                "nom": el.nom,
-                                "prix": el.prix,
+                                "nom": el.name,
+                                "prix": el.price,
                                 "description": el.description
                             };  
-                            if(!isDef(carteObject.cartes[el.id_categorie])){
-                                carteObject.cartes[el.id_categorie] = [];
-                                carteObject.cartes[el.id_categorie].push(objectToInject);
+                            if(!isDef(carteObject.cartes[el.id_category])){
+                                carteObject.cartes[el.id_category] = [];
+                                carteObject.cartes[el.id_category].push(objectToInject);
                             }else{
-                                carteObject.cartes[el.id_categorie].push(objectToInject)
+                                carteObject.cartes[el.id_category].push(objectToInject)
                             }
                         });
-                        Categories.get({ id_categorie: id_cat }, function (err, categories) {
-                            console.log(categories)
-                            if (err || categories.length === 0) { callback(err, "no categories") }
+                        category.get({ id_category: id_cat }, function (err, category) {
+                            console.log(category)
+                            if (err || category.length === 0) { callback(err, "no category") }
                             else {
-                                carteObject["categories"] = TableJsonIdSpecificKey({}, categories, "id_categorie", "name");
+                                carteObject["category"] = TableJsonIdSpecificKey({}, category, "id_category", "name");
+                                console.log(carteObject)
                                 callback(null, carteObject)
                             }
                         })
