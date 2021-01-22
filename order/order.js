@@ -66,7 +66,7 @@ const Order ={
         values.push("'"+dateNow()+"'");
       
         return db.query(
-            "INSERT INTO FROM tb_order (" +
+            "INSERT INTO tb_order (" +
             keys.join(",") +
             ") VALUES  (" +
             values.join(",") +
@@ -95,7 +95,7 @@ typeof body.status != "undefined"
                if(Order.length>0 && id!==null){
                         
                             return db.query(
-                                "UPDATE FROM tb_order SET "+update.join(",")+" WHERE id = "+id,
+                                "UPDATE tb_order SET "+update.join(",")+" WHERE id = "+id,
                                   callback
                               );
                }
