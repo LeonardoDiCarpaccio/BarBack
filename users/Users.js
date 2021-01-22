@@ -75,14 +75,14 @@ var Users = {
     (typeof body.email != "undefined") ?
       where.push("email = '" + body.email + "'") : null;
 
-    (typeof body.firstname != "undefined") ?
-      where.push("firstname = '" + body.firstname + "'") : null;
+    (typeof body.first_name != "undefined") ?
+      where.push("first_name = '" + body.first_name + "'") : null;
 
-    (typeof body.lastname != "undefined") ?
-      where.push("lastname = '" + body.lastname + "'") : null;
+    (typeof body.last_name != "undefined") ?
+      where.push("last_name = '" + body.last_name + "'") : null;
 
-    return (where.length > 0) ? db.query("UPDATE users SET " + where.join("AND") + "WHERE id = " + body.id, callback) :
-      db.query("UPDATE users SET " + where + " WHERE id = " + body.id, callback);
+    return (where.length > 0) ? db.query("UPDATE user SET " + where.join("AND") + "WHERE id = " + body.id, callback) :
+      db.query("UPDATE user SET " + where + " WHERE id = " + body.id, callback);
   },
 
   delete: function (req, callback) {
@@ -90,15 +90,14 @@ var Users = {
     var where = [];
     req = functions.cleanQuery(req);
 
-    (typeof body.firstname != "undefined") ?
-      Array.isArray(body.firstname) ?
-        where.push("firstname IN ('" + body.firstname.join("','") + "')") :
-        where.push("firstname = '" + body.firstname + "'") :
+    (typeof body.id != "undefined") ?
+      Array.isArray(body.id) ?
+        where.push("id IN ('" + body.id.join("','") + "')") :
+        where.push("id = '" + body.id + "'") :
       null;
-    console.log("DELETE FROM users WHERE " + where.join("AND"));
-    console.log(where)
+    console.log("DELETE FROM user WHERE " + where.join("AND"));
 
-    return (where.length > 0) ? db.query("DELETE FROM users WHERE " + where.join("AND"), callback) : null;
+    return (where.length > 0) ? db.query("DELETE FROM user WHERE " + where.join("AND"), callback) : null;
 
 
 

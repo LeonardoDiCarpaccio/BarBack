@@ -37,8 +37,8 @@ router.post("/getMenuByOwner", function(req, res){
     })
 });
 
-router.post("/getCommandbyStatus", function(req, res){
-    PreviewOwner.getCommandbyStatus(req, function (err, rows){
+router.post("/getOrderbyStatus", function(req, res){
+    PreviewOwner.getOrderbyStatus(req, function (err, rows){
         if(err) res.status(400).json(err);
         else res.json(rows)
     })
