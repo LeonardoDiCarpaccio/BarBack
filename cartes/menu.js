@@ -2,9 +2,8 @@ var db = require("../db");
 const { dateNow, cleanQuery } = require("../helpers/functions");
 const { update } = require("../users/Users");
 
-const Carte = {
+const Menu = {
     get: function (req, callback) {
-        console.log("get pasesd")
         var body = (typeof req.body != "undefined") ? req.body : req;
         body = cleanQuery(body);
 
@@ -73,15 +72,14 @@ const Carte = {
         var id_owner = typeof body.id_owner != "undefined" ? body.id_owner : null
         var id_item = typeof body.id_item != "undefined" ? body.id_item : null
         if (id_user !== null || id_item !== null) {
-            console.log("pass first if")
-            Carte.get({ id_owner: id_owner }, function (err, cartes) {
-                if (err || cartes.length === 0) { callback(null, "no updated") }
+            Menu.get({ id_owner: id_owner }, function (err, menus) {
+                if (err || menus.length === 0) { callback(null, "no updated") }
                 else {
-                    cartes.forEach((el) => {
-                        if (typeof el.carte != "undefined") {
-                            if (Array.isArray(el.carte) === true) {
-                                el.carte.push(id_item)
-                                array = [...el.carte]
+                    menus.forEach((el) => {
+                        if (typeof el.menu != "undefined") {
+                            if (Array.isArray(el.menu) === true) {
+                                el.Menu.push(id_item)
+                                array = [...el.menu]
                             } else {
                                 array.push(id_item)
 
@@ -89,7 +87,7 @@ const Carte = {
                         }
                     })
                     return db.query(
-                        "UPDATE tb_carte SET menu = '" + JSON.stringify(array) + "' WHERE id_owner = " + id_user,
+                        "UPDATE tb_Menu SET menu = '" + JSON.stringify(array) + "' WHERE id_owner = " + id_user,
                         callback
                     );
                 }
@@ -115,4 +113,4 @@ const Carte = {
 
 
 }
-module.exports = Carte
+module.exports = Menu

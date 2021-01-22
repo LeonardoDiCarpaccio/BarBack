@@ -3,10 +3,10 @@ var router = express.Router();
 var bodyParser = require("body-parser");
 router.use(bodyParser.urlencoded({ extended: false }));
 router.use(bodyParser.json());
-var Categories = require('./category')
+var Category = require('./category')
 
 router.post("/update", function(req, res){
-    Categories.update(req,function(err , rows){
+    Category.update(req,function(err , rows){
         if(err){
             res.status(400).json(err)
         }
@@ -16,7 +16,7 @@ router.post("/update", function(req, res){
     })
 })
 router.post("/", function(req, res){
-    Categories.get(req,function(err , rows){
+    Category.get(req,function(err , rows){
         if(err){
             res.status(400).json(err)
         }
@@ -26,7 +26,7 @@ router.post("/", function(req, res){
     })
 })
 router.post("/insert", function(req, res){
-    Categories.insert(req,function(err , rows){
+    Category.insert(req,function(err , rows){
         if(err){
             res.status(400).json(err)
         }
@@ -36,7 +36,7 @@ router.post("/insert", function(req, res){
     })
 })
 router.post("/delete", function(req, res){
-    Categories.delete(req,function(err , rows){
+    Category.delete(req,function(err , rows){
         if(err){
             res.status(400).json(err)
         }
