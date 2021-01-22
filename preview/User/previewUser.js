@@ -113,8 +113,8 @@ const PreviewUser = {
                         resItems.forEach((el, i) => {
                             if (isDef(el.id_category) && id_cat.indexOf(el.id_category) == -1) id_cat.push(el.id_category);
                             let objectToInject = {
-                                "nom": el.name,
-                                "prix": el.price,
+                                "name": el.name,
+                                "price": el.price,
                                 "description": el.description
                             };  
                             if(!isDef(carteObject.cartes[el.id_category])){
@@ -124,11 +124,11 @@ const PreviewUser = {
                                 carteObject.cartes[el.id_category].push(objectToInject)
                             }
                         });
-                        category.get({ id_category: id_cat }, function (err, category) {
+                        category.get({ id: id_cat }, function (err, category) {
                             console.log(category)
                             if (err || category.length === 0) { callback(err, "no category") }
                             else {
-                                carteObject["category"] = TableJsonIdSpecificKey({}, category, "id_category", "name");
+                                carteObject["category"] = TableJsonIdSpecificKey({}, category, "id", "name");
                                 console.log(carteObject)
                                 callback(null, carteObject)
                             }

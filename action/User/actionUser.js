@@ -13,11 +13,12 @@ passerCommande : function(req,callback){
     var id_client = typeof body.id_client != "undefined" ? body.id_client : null
     var id_owner = typeof body.id_owner != "undefined" ? body.id_owner : null
     var detail_commande = typeof body.detail_commande != "undefined" ?  body.detail_commande :  null
-    var table = typeof body.table != "undefined" ? body.table : null
+    var table = typeof body.location != "undefined" ? body.location : null
     if(detail_commande !==  null || table !== null || id_client != null || id_owner != null){
     
        
         Detail.insert({detail : detail_commande,location : table},function(err,detail){
+            console.log("detail",detail)
             console.log(body,"body")
             if(err){callback(err,"cant insert detail")}
             else{
