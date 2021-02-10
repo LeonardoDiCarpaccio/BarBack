@@ -127,7 +127,7 @@ var Auth = {
         (typeof body.password != "undefined") ?
             where.push("password = '" + body.password + "'") :
             null;
-
+            console.log("SELECT * FROM user WHERE " + where.join(" AND "))
         return (where.length > 0) ?
             db.query("SELECT * FROM user WHERE " + where.join(" AND "), callback) : null
 
