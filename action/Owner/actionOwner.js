@@ -15,7 +15,7 @@ const ActionOwner = {
                     if(err) callback(err, "can't insert category")
                     Item.insert({ name: body.name, price: body.price, id_category: insert.insertId, description: body.description }, function (err, inserts) {
                         if (err) callback(err, "can't insert item");
-                        else callback(inserts.insertId, 'insert item & category done');
+                        else callback(null, inserts.insertId);
                     })
                 })
             }else{
@@ -24,7 +24,7 @@ const ActionOwner = {
             } else {
                 Item.insert({ name: body.name, price: body.price, id_category: body.id_category, description: body.description }, function (err, insert) {
                     if (err) callback(err, "can't insert item");
-                    else callback(insert.insertId, 'insert item done');
+                    else callback(null, insert.insertId);
                 })
             }
         } else {
