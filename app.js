@@ -65,6 +65,9 @@ app.use(slug + '/detail', detailController)
 var itemsController = require('./items/itemsController')
 app.use(slug + '/item', itemsController)
 
+var assistantController = require('./assistant_carte/assistantController')
+app.use(slug + '/assistant', assistantController)
+
 var categoriesController = require('./category/categoryController')
 app.use(slug + '/categories', categoriesController)
 

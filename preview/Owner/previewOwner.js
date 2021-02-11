@@ -7,7 +7,7 @@ const { dateNow, cleanQuery, TableJsonId, TableJsonIdSpecificKey, isDef, isDefAr
 const Users = require("../../users/Users");
 const Order = require("../../order/order");
 const Detail = require("../../detail/detail");
-
+const Assistant = require('../../assistant_carte/assistant')
 
 const PreviewOwner = {
 
@@ -41,6 +41,36 @@ getOrderbyStatus : function(req, callback) {
     })
 
 },
+
+getAssistantCarte : function(req,callback){
+ 
+    var id_cat = []
+    var res  = {assistant : {}};
+    Assistant.get({},function(err,rows){
+        if(err || rows==undefined){callback(err,"get assistant bug")}
+        else{
+            var result = (typeof rows != "undefined") ? Object.values(JSON.parse(JSON.stringify(rows))) : [];
+            result.forEach((el)=>{
+                id_cat.find((elm)=>elm==el.id_category)==undefined ? id_cat.push(el.id_category) : null
+                if(res.assistant[el.id_category] == undefined){
+                    res.assistant[el.id_category] = [el]
+                }else{
+                    res.assistant[el.id_category].push(el)
+                }
+            })
+
+            Categories.get({id : id_cat},function(err,categories){
+                if(err ||categories == undefined){callback(err,"get categories bug")}
+                else{
+                        res["categories"] = TableJsonId({},categories,"id")
+                          return callback(null,res)
+                }
+            })
+
+        }
+    })
+
+}
 
 }
 module.exports = PreviewOwner

@@ -44,4 +44,12 @@ router.post("/getOrderbyStatus", function(req, res){
     })
 });
 
+
+router.post("/getAssistantCarte", function(req, res){
+    PreviewOwner.getAssistantCarte(req, function (err, rows){
+        if(err) res.status(400).json(err);
+        else res.json(rows)
+    })
+});
+
 module.exports = router
