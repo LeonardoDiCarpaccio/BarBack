@@ -2,8 +2,12 @@ var express = require('express');
 var app = express();
 const cors = require('cors');
 var bodyParser = require('body-parser');
+var corsOptions = {
+  origin: '*',
+  optionsSuccessStatus: 200 // some legacy browsers (IE11, various SmartTVs) choke on 204 
+}
+app.use(cors(corsOptions)); 
 
-app.use(cors()); 
 app.use(function(req, res, next) {
   res.header("Access-Control-Allow-Origin", "*");
   res.setHeader('Access-Control-Allow-Methods', 'GET, POST, OPTIONS, PUT, PATCH, DELETE');
