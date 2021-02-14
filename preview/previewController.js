@@ -10,7 +10,7 @@ router.use(bodyParser.json());
 router.post("/getCityFiltered", function(req, res){
     PreviewUser.getCityFiltered(req,function(err , rows){
         if(err){
-            res.status(400).json(err);        }
+            res.status(400).json("bug chelou");        }
         else{
             res.json(rows)
             console.log('getTown done')
