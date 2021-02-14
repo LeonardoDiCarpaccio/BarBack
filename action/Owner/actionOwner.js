@@ -3,10 +3,11 @@ const Item = require("../../items/items");
 const { isDef, cleanQuery } = require("../../helpers/functions");
 
 const ActionOwner = {
+    // name item  price description  id_cat ==0 ? unknow  need nameCat  :  id_category
     addItemDb: function (req, callback) {
         var body = (typeof req.body != "undefined") ? req.body : req;
         body = cleanQuery(body);
-        console.log(body)
+        // console.log(body)
 
         if (isDef(body.name) && isDef(body.price) && isDef(body.id_category)) {
             if (body.id_category == 0) {
@@ -15,20 +16,20 @@ const ActionOwner = {
                     if(err) callback(err, "can't insert category")
                     Item.insert({ name: body.name, price: body.price, id_category: insert.insertId, description: body.description }, function (err, inserts) {
                         if (err) callback(err, "can't insert item");
-                        else callback(inserts.insertId, 'insert item & category done');
+                        else callback(null, inserts.insertId);
                     })
                 })
             }else{
-                callback(null, 'error insert item missing name category')
+                callback(err, 'error insert item missing name category')
             }
             } else {
                 Item.insert({ name: body.name, price: body.price, id_category: body.id_category, description: body.description }, function (err, insert) {
                     if (err) callback(err, "can't insert item");
-                    else callback(insert.insertId, 'insert item done');
+                    else callback(null, insert.insertId);
                 })
             }
         } else {
-            callback(null, 'error parameters');
+            callback(err, 'error parameters');
         }
 
     }

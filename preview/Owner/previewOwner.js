@@ -63,6 +63,7 @@ getAssistantCarte : function(req,callback){
                 if(err ||categories == undefined){callback(err,"get categories bug")}
                 else{
                         res["categories"] = TableJsonId({},categories,"id")
+                        console.log("assistant",res)
                           return callback(null,res)
                 }
             })
