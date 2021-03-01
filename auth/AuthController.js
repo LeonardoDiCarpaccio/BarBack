@@ -61,16 +61,34 @@ console.log(row)
     var passwordIsValid = (row.length>0) ? row[0].password===req.body.password ? true : false : null;
     if(!passwordIsValid) return res.status("wrong password")
 
-      var id = row[0].id_user;
+    var id = row[0].id_user;
       
-      var role = row[0].role;
-      console.log("id"+id)
-     
-     var token = jwt.sign({ userId: id,role : role}, config.secret, {
-      expiresIn: "2h",
-    });
+    var role = row[0].role;
+    console.log("id"+id)
+   
+    if(role==2){
+      var bar = row[0].name_institution
+      var token = jwt.sign({ userId: id,role : role,bar : bar}, config.secret, {
+        expiresIn: "2h",
+        
+      });
+      console.log(token)
+    const userInfo = {
+      token,
+      id,
+      role,
+      bar
+    }
 
-console.log(token)
+   
+    
+     res.status(200).send(userInfo); 
+    }else{
+      var token = jwt.sign({ userId: id,role : role}, config.secret, {
+        expiresIn: "2h",
+        
+      });
+      console.log(token)
     const userInfo = {
       token,
       id,
@@ -79,7 +97,11 @@ console.log(token)
 
    
     
-     res.status(200).send(userInfo);  // { auth: true, token: token }
+     res.status(200).send(userInfo); 
+    }
+ 
+
+ // { auth: true, token: token }
   });
 });
 
@@ -89,6 +111,9 @@ router.get("/logout",function (req, res) {
 
   res.status(200).send({ auth: false, token: null });
 });
+
+ 
+
 
 
 router.get("/check", VerifyToken, function (req, res) {

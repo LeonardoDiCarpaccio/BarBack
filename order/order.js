@@ -91,20 +91,14 @@ typeof body.id_client != "undefined"
 typeof body.status != "undefined"
 ? update.push("status = " + body.status )
 : null;
-       Order.get({id : body.id},function(err,Order){
-               if(Order.length>0 && id!==null){
-                        
+    
+                        console.log("UPDATE tb_order SET "+update.join(",")+" WHERE id_detail = "+id)
                             return db.query(
-                                "UPDATE tb_order SET "+update.join(",")+" WHERE id = "+id,
+                                "UPDATE tb_order SET "+update.join(",")+" WHERE id_detail = "+id,
                                   callback
                               );
-               }
-                    else{
-                            callback(null,"no updated")
-                    }
-                
-     
-       })
+               
+                   
     
 
     },

@@ -1,7 +1,6 @@
 var db = require("../db");
 const { dateNow } = require("../helpers/functions");
 var moment = require("moment")
-
 var Auth = {
 
 
