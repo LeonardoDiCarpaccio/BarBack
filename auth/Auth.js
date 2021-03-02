@@ -42,9 +42,9 @@ var Auth = {
             column.push('tel')
             values.push(body.tel)
         }
-        if (typeof (body.adresse) !== "undefined") {
-            column.push('adresse')
-            values.push(JSON.stringify(body.adresse))
+        if (typeof (body.location) !== "undefined") {
+            column.push('location')
+            values.push(JSON.stringify(body.location))
         }
         if (typeof (body.Siret) !== "undefined") {
             column.push('Siret')
