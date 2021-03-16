@@ -1,4 +1,4 @@
-var app = require('./app');
+var app = require('./app2');
 var bodyParser = require('body-parser');
 var port = process.env.PORT || 3000;
 
