@@ -1,4 +1,4 @@
-var db = require('../db');
+var db = require('./db2');
 const { isDef, cleanQuery } = require('../helpers/functions');
 
 var Items = {
@@ -25,9 +25,12 @@ callback(null,send)
 }            else
 {    console.log('SELECT ' + target + ' FROM resultat');       
    return db.query('SELECT ' + target + ' FROM resultat', function(err,rows){
-    console.log(rows)
-    var res = Object.values(JSON.parse(JSON.stringify(rows)))
-    callback(null,res)
+       if(err){callback(err,"pb")}else{
+        console.log(rows)
+        var res = Object.values(JSON.parse(JSON.stringify(rows)))
+        callback(null,res)
+       }
+
 });
 }        } else {
             return callback('ERROR PARAMETERS');
