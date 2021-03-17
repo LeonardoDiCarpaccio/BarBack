@@ -28,8 +28,10 @@ callback(null,send)
        if(err){callback(err,"pb")}else{
         console.log(rows)
         var res = Object.values(JSON.parse(JSON.stringify(rows)))
-        callback(null,res)
-       }
+        var send = {
+            resultat : res
+        }
+        callback(null,send)       }
 
 });
 }        } else {
