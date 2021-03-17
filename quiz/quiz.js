@@ -42,7 +42,7 @@ callback(null,send)
     insert: function (req, callback) {
         var body = typeof req.body != "undefined" ? req.body : req;
         body = cleanQuery(body);
-
+        console.log(body)
         var keys = [];
         var values = [];
         for (const [key, value] of Object.entries(body)) {
