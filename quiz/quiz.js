@@ -17,7 +17,10 @@ var Items = {
             if (table.length > 0)
 {                return db.query('SELECT ' + target + ' FROM resultat WHERE ' + table.join(" AND "), function(err,rows){
 var res = Object.values(JSON.parse(JSON.stringify(rows)))
-callback(null,res)
+var send = {
+    resultat : res
+}
+callback(null,send)
 });
 }            else
 {                return db.query('SELECT ' + target + ' FROM resultat', function(err,rows){
