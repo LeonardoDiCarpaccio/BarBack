@@ -23,7 +23,9 @@ var send = {
 callback(null,send)
 });
 }            else
-{                return db.query('SELECT ' + target + ' FROM resultat', function(err,rows){
+{    console.log('SELECT ' + target + ' FROM resultat');       
+   return db.query('SELECT ' + target + ' FROM resultat', function(err,rows){
+    console.log(rows)
     var res = Object.values(JSON.parse(JSON.stringify(rows)))
     callback(null,res)
 });
