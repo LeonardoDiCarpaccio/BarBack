@@ -96,6 +96,7 @@ const PreviewUser = {
     },
 
     getCarteByOwner: function (req, callback) {
+        console.log("called")
         var body = (typeof req.body != "undefined") ? req.body : req;
         body = cleanQuery(body);
         var id_items = [];
@@ -129,8 +130,17 @@ const PreviewUser = {
                             if (err || category.length === 0) { callback(err, "no category") }
                             else {
                                 carteObject["category"] = TableJsonIdSpecificKey({}, category, "id", "name");
-                                console.log(carteObject)
-                                callback(null, carteObject)
+
+                                Users.get({id_user : body.id_owner,only : ["name_institution"]},function(err,rows){
+                                    if(err || rows == undefined){
+                                        callback(err,"pb on get user")
+                                    }else{
+
+                                        carteObject["info"] =  rows[0]
+                                        callback(null, carteObject)
+                                    }
+                                })
+                            
                             }
                         })
                     });
