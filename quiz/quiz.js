@@ -14,22 +14,24 @@ var Items = {
                     : table.push("id = " + body.id)
             }
 
-            if (table.length > 0) {
-                return db.query('SELECT ' + target + ' FROM resultat WHERE ' + table.join(" AND "), function (err, rows) {
-                    var res = Object.values(JSON.parse(JSON.stringify(rows)))
-                    var send = {
-                        resultat: res
-                    }
-                    callback(null, send)
-                });
-            } else {
-                console.log('SELECT ' + target + ' FROM resultat');
-                return db.query('SELECT ' + target + ' FROM resultat', function (err, rows) {
-                    if (err) { callback(err, "pb") } else {
-                        console.log(rows)
-                        var res = Object.values(JSON.parse(JSON.stringify(rows)))
-                        callback(null, res)
-                    }
+            if (table.length > 0)
+{                return db.query('SELECT ' + target + ' FROM resultat WHERE ' + table.join(" AND "), function(err,rows){
+var res = Object.values(JSON.parse(JSON.stringify(rows)))
+var send = {
+    resultat : res
+}
+callback(null,send)
+});
+}            else
+{    console.log('SELECT ' + target + ' FROM resultat');       
+   return db.query('SELECT ' + target + ' FROM resultat', function(err,rows){
+       if(err){callback(err,"pb")}else{
+        console.log(rows)
+        var res = Object.values(JSON.parse(JSON.stringify(rows)))
+        var send = {
+            resultat : res
+        }
+        callback(null,send)       }
 
                 });
             }
@@ -41,7 +43,7 @@ var Items = {
     insert: function (req, callback) {
         var body = typeof req.body != "undefined" ? req.body : req;
         body = cleanQuery(body);
-
+        console.log(body)
         var keys = [];
         var values = [];
         for (const [key, value] of Object.entries(body)) {
