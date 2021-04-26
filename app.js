@@ -23,6 +23,7 @@ app.use(express.static('./dist/')); //permet d'aller recuperer le front builder 
 
 const slug = '/api/v1';
 
+
 // app.post('/api/auth/testtoken', function(req, res) {
 //   const body = req.body;
 

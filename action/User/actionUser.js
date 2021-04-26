@@ -3,6 +3,10 @@ const { TableJsonId } = require("../../helpers/functions");
 var db = require("../../db");
 const { dateNow, cleanQuery } = require("../../helpers/functions");
 const Command = require("../../order/order");
+const Users = require("../../users/Users");
+var express = require('express')
+var path     = require('path');
+
 
 
 const ActionUser = {
@@ -32,7 +36,25 @@ passerCommande : function(req,callback){
     }else {
         callback(null,"no detail")
     }
+
+},
+
+getImgById : function(req, callback){
+    var body = (typeof req.body != "undefined") ? req.body : req;
+    body = cleanQuery(body);
+    var id_user = typeof body.id != "undefined" ? body.id : null
+    if(id_user !== null){
+        Users.get({id_user :id_user}, function(err,res){
+            if(err) callback(err, "Cannot get image from id");
+            else callback(null ,res[0].img);
+            console.log(res[0].img)
+        })
+    }
+    
+
 }
+
+
 
 }
 module.exports = ActionUser

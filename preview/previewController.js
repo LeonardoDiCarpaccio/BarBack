@@ -52,4 +52,11 @@ router.post("/getAssistantCarte", function(req, res){
     })
 });
 
+router.post("/getMenuFiltered", function(req, res){
+    PreviewUser.getMenuFiltered(req, function (err, rows){
+        if(err) res.status(400).json(err);
+        else res.json(rows)
+    })
+});
+
 module.exports = router

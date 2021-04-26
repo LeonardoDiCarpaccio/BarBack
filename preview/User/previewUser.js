@@ -153,7 +153,33 @@ const PreviewUser = {
         }
 
 
+    },
+
+    getMenuFiltered: function(req, callback) {
+        var body = (typeof req.body != "undefined") ? req.body : req;
+        body = cleanQuery(body);
+        var id_user = typeof body.id != "undefined" ? body.id : null
+        var where = []
+
+        if(id_user !== null){
+
+        if (
+            (typeof body.id.name != "undefined" &&
+            body.id.name.length > 0) 
+        ) {
+
+            where.push("name LIKE '" + body.id.name + "%'");
+
+        }
+        db.query("SELECT name FROM category WHERE " + where, function (err, rows) {
+            if (err || rows.length === 0) { callback(err, "no category found") }
+            else {
+                callback(null, rows)
+            }
+        })
+
     }
+}
 
 
 }
