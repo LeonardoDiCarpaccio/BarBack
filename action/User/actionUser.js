@@ -17,10 +17,11 @@ passerCommande : function(req,callback){
     var id_client = typeof body.id_client != "undefined" ? body.id_client : null
     var id_owner = typeof body.id_owner != "undefined" ? body.id_owner : null
     var detail_order = typeof body.detail_order != "undefined" ?  body.detail_order :  null
+    console.log(body.location,"table")
+
     var table = typeof body.location != "undefined" ? body.location : null
     if(detail_order !==  null || table !== null || id_client != null || id_owner != null){
     
-       
         Detail.insert({detail : detail_order,location : table},function(err,detail){
             console.log("detail",detail)
             console.log(body,"body")

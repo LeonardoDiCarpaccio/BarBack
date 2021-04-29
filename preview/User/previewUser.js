@@ -53,11 +53,11 @@ const PreviewUser = {
                         callback(err, "no bar")
                     }
 
-                    Users.get({ id_user: arrayIdOwner, only: ["id_user,name_institution,role,id_category,img"] }, function (err, users) {
+                    Users.get({ id_user: arrayIdOwner, only: ["id_user,name_institution,role,id_category,img,description"] }, function (err, users) {
                         if (err || users.length === 0) {
                             callback(err, "no bar")
                         } else {
-                            console.log(users)
+                            console.log(users,"users info get ")
 
                             users.forEach((el, index) => {
 

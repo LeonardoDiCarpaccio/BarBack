@@ -2,7 +2,7 @@ var db = require('./db2');
 const { isDef, cleanQuery } = require('../helpers/functions');
 
 var Items = {
-    get : function (req, callback) {
+    get: function (req, callback) {
         let body = isDef(req.body) ? req.body : req;
         let target = (typeof body.only != "undefined") && Array.isArray(body.only) && body.only.length > 0 ? body.only.join(',') : "*";
         let table = [];
@@ -33,8 +33,9 @@ callback(null,send)
         }
         callback(null,send)       }
 
-});
-}        } else {
+                });
+            }
+        } else {
             return callback('ERROR PARAMETERS');
         }
     },
