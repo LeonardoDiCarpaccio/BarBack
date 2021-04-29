@@ -7,10 +7,10 @@ var Users = {
 
 
   get: function (req, callback) {
-    console.log("get users",body)
+   
     var body = (typeof req.body != "undefined") ? req.body : req;
     body = cleanQuery(body);
-
+    console.log("get users",body)
     let target = (typeof body.only != "undefined") && Array.isArray(body.only) && body.only.length > 0 ? body.only.join(',') : "*"; // 
 
     var where = [];
