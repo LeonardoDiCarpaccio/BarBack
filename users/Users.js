@@ -7,6 +7,7 @@ var Users = {
 
 
   get: function (req, callback) {
+    console.log("get users",body)
     var body = (typeof req.body != "undefined") ? req.body : req;
     body = cleanQuery(body);
 
