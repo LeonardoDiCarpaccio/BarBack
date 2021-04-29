@@ -25,10 +25,11 @@ var Users = {
 
     (where.length > 0) ? db.query("SELECT " + target + " FROM user WHERE " + where.join(" AND "), function (err, rows) {
       var result = (typeof rows != "undefined") ? Object.values(JSON.parse(JSON.stringify(rows))) : [];
-
+console.log(result)
       return callback(null, result);
     }) : db.query("SELECT " + target + " FROM user ", function (err, rows) {
       var result = (typeof rows != "undefined") ? Object.values(JSON.parse(JSON.stringify(rows))) : [];
+      console.log(result)
 
 
       return callback(null, result);
