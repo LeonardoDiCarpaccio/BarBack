@@ -46,6 +46,16 @@ router.post("/delete", function(req, res){
     })
 })
 
+router.post("/likecategory", function(req, res){
+    Category.likeCategory(req,function(err , rows){
+        if(err){
+            res.status(400).json(err)
+        }
+        else{
+            res.json(rows)
+        }
+    })
+})
 
 
 

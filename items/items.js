@@ -38,7 +38,11 @@ var Items = {
                 keys.push(key);
             }
         }
-
+console.log("INSERT INTO items (" +
+keys.join(",") +
+") VALUES  (" +
+values.join(",") +
+")")
         return db.query(
             "INSERT INTO items (" +
             keys.join(",") +

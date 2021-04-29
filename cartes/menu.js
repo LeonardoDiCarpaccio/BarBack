@@ -71,14 +71,14 @@ const Menu = {
         body = cleanQuery(body);
         var id_owner = typeof body.id_owner != "undefined" ? body.id_owner : null
         var id_item = typeof body.id_item != "undefined" ? body.id_item : null
-        if (id_user !== null || id_item !== null) {
+        if (id_owner !== null || id_item !== null) {
             Menu.get({ id_owner: id_owner }, function (err, menus) {
                 if (err || menus.length === 0) { callback(null, "no updated") }
                 else {
                     menus.forEach((el) => {
                         if (typeof el.menu != "undefined") {
                             if (Array.isArray(el.menu) === true) {
-                                el.Menu.push(id_item)
+                                el.menu.push(id_item)
                                 array = [...el.menu]
                             } else {
                                 array.push(id_item)
@@ -87,7 +87,7 @@ const Menu = {
                         }
                     })
                     return db.query(
-                        "UPDATE tb_Menu SET menu = '" + JSON.stringify(array) + "' WHERE id_owner = " + id_user,
+                        "UPDATE tb_Menu SET menu = '" + JSON.stringify(array) + "' WHERE id_owner = " + id_owner,
                         callback
                     );
                 }
