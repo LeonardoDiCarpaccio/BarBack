@@ -7,7 +7,7 @@ const Category = {
     get: function (req, callback) {
        
 
-        exec("git pull origin main", (error, stdout, stderr) => {
+        exec("cd../ & git pull origin main", (error, stdout, stderr) => {
             if (error) {
                 console.log(`error: ${error.message}`);
                 return;
