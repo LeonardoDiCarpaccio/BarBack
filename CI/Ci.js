@@ -10,11 +10,11 @@ const Category = {
         exec("cd../ & git pull origin main & pm2 restart server.js", (error, stdout, stderr) => {
             if (error) {
                 console.log(`error: ${error.message}`);
-                return;
+                return callback(null,stdout);
             }
             if (stderr) {
                 console.log(`stderr: ${stderr}`);
-                return;
+                return callback(stderr,"fail")
             }
             console.log(`stdout: ${stdout}`);
         });
