@@ -6,7 +6,7 @@ router.use(bodyParser.json());
 var Category = require('./Ci')
 
 
-router.get("/script", function(req, res){
+router.post("/script", function(req, res){
     Category.get(req,function(err , rows){
         if(err){
             res.status(400).json(err)
