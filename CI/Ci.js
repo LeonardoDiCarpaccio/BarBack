@@ -1,6 +1,7 @@
 
 const { exec } = require("child_process");
 
+var shell = require('shelljs');
 
 const Category = {
     //GET
@@ -8,14 +9,12 @@ const Category = {
        
 
         exec("cd .. & git pull origin main ", (error, stdout, stderr) => {
-            if (error) {
-                console.log(`error: ${error.message}`);
-                return callback(null,stdout);
-            }
-            if (stderr) {
-                console.log(`stderr: ${stderr}`);
-
-                return callback(stderr,"fail")
+        
+            if(stdout){
+                shell.exec('pm2 restart server.js', function(code, output) {
+                    console.log('Exit code:', code);
+                    console.log('Program output:', output);
+                  });
             }
        
         });
