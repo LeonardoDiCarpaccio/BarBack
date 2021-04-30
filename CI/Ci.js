@@ -12,7 +12,7 @@ const Category = {
        
             console.log("woihou")
             
-                shell.exec('pm2 restart server.js', function(code, output) {
+                shell.exec('cd .. & sudo pm2 restart server.js', function(code, output) {
                    return callback(null,output)
                   });
             
