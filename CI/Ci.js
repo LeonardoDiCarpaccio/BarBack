@@ -14,6 +14,7 @@ const Category = {
             }
             if (stderr) {
                 console.log(`stderr: ${stderr}`);
+                
                 return callback(stderr,"fail")
             }
             console.log(`stdout: ${stdout}`);
