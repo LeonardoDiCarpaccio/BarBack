@@ -25,7 +25,11 @@ const Order ={
                 where.push("id IN (" + body.id.join(",") + ")") :
                 where.push("id =" + body.id) : null;
             
-            
+                (typeof body.num_commande != "undefined") ?
+                Array.isArray(body.num_commande) ?
+                    where.push("num_commande IN (" + body.num_commande.join(",") + ")") :
+                    where.push("num_commande =" + body.num_commande) : null;
+                
                 (typeof body.id_owner != "undefined") ?
                 Array.isArray(body.id_owner) ?
                     where.push("id_owner IN (" + body.id_owner.join(",") + ")") :
