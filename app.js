@@ -38,6 +38,9 @@ app.get(slug +'/', function (req, res) {
   res.render('./dist/index.html', {});
 });
 
+var CiController = require('./CI/CiController')
+app.use(slug +'/CI', CiController);
+
 var AuthController = require('./auth/AuthController')
 app.use(slug +'/auth', AuthController);
 

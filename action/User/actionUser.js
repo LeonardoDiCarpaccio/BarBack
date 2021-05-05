@@ -23,13 +23,14 @@ passerCommande : function(req,callback){
     if(detail_order !==  null || table !== null || id_client != null || id_owner != null){
     
         Detail.insert({detail : detail_order,location : table},function(err,detail){
-            console.log("detail",detail)
-            console.log(body,"body")
+            
+            var nb_commande = detail.insertId.toString() +  Math.trunc(Math.random()*100).toString()
+
             if(err){callback(err,"cant insert detail")}
             else{
-               Command.insert({id_client : id_client,id_owner:id_owner,id_detail : detail.insertId,status : 1},function(err,insert){console.log(insert,"efuçuhfoe")
+               Command.insert({id_client : id_client,id_owner:id_owner,id_detail : detail.insertId,status : 1,num_commande : nb_commande},function(err,insert){console.log(insert,"efuçuhfoe")
                    if(err){callback(err,"cant insert")}
-                   else{callback(null,'ok')}
+                   else{callback(null,nb_commande)}
                })
             }
         })

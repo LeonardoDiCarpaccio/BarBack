@@ -50,6 +50,11 @@ const Category = {
                 keys.push(key);
             }
         }
+        console.log( "INSERT INTO category (" +
+        keys.join(",") +
+        ") VALUES  (" +
+        values.join(",") +
+        ")")
         return db.query(
             "INSERT INTO category (" +
             keys.join(",") +
@@ -84,6 +89,13 @@ const Category = {
 
     },
 
+    likeCategory : function(req,callback){
+        var body = (typeof req.body != "undefined") ? req.body : req;
+        body = cleanQuery(body);
+        // "city LIKE '" + body.city + "%'"
+        var like = (typeof body.like != "undefined") ?body.like : req;
+        return db.query("SELECT * FROM category WHERE name LIKE '"+like+"%'",callback)
+    }
 }
 
 module.exports = Category

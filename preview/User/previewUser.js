@@ -5,6 +5,8 @@ const Items = require('../../items/items');
 var db = require("../../db");
 const { dateNow, cleanQuery, TableJsonId, TableJsonIdSpecificKey, isDef, isDefArray } = require("../../helpers/functions");
 const Users = require("../../users/Users");
+const Order = require("../../order/order");
+const Detail = require("../../detail/detail");
 
 const PreviewUser = {
 
@@ -96,9 +98,10 @@ const PreviewUser = {
     },
 
     getCarteByOwner: function (req, callback) {
-        console.log("called")
         var body = (typeof req.body != "undefined") ? req.body : req;
         body = cleanQuery(body);
+        console.log("called",body)
+
         var id_items = [];
         var id_cat = []
         let carteObject = {};
@@ -156,6 +159,34 @@ const PreviewUser = {
 
 
     },
+
+    getOrderHisto : function(req,callback){
+        var body = (typeof req.body != "undefined") ? req.body : req;
+        body = cleanQuery(body);
+        res = {
+
+        }
+        Order.get({num_commande : body.num_commande},function(err,order){
+            if(err){ return callback(err,"wrong num_commande")}
+            else{
+                order.forEach((el)=>{
+                    res["order"] = el
+                })
+
+                Detail.getDetail({id : res["order"].id_detail},function(err,detail){
+                    if(err){return callback(err,"wrong num_commande")}
+                    else{
+                        detail.forEach((el)=>{
+                            res["detail"] = el
+                        })
+
+                        return callback(null,res)
+                    }
+                })
+            }
+        })
+
+    }
 
 
 

@@ -2,7 +2,6 @@ var jwt = require('jsonwebtoken');
 var config = require('../config');
 
 function verifyToken(req, res, next) {
-  console.log(req.headers)
   var token = req.headers['x-access-token'];
   console.log(token)
   if (!token)

@@ -7,7 +7,7 @@ const Users = require('./Users');
 var VerifyToken = require('../auth/VerifyToken');
 
 
-router.post('/', VerifyToken,function (req, res) {
+router.post('/',function (req, res) {
     Users.get(req,function(err,rows){
 
         if(err) {

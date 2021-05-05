@@ -26,6 +26,7 @@ const City ={
                     typeof el.id_owner != "undefined" ? el.id_owner = JSON.parse(el.id_owner) : null;
                 
             })
+            console.log("result get city",result)
             return callback(null, result);
         }) : db.query("SELECT " + target + " FROM tb_city ", function (err, rows) {
             var result = (typeof rows != "undefined") ? Object.values(JSON.parse(JSON.stringify(rows))) : [];
@@ -33,7 +34,8 @@ const City ={
                 typeof el.id_owner != "undefined" ? el.id_owner = JSON.parse(el.id_owner) : null;
             
         })
-            
+        console.log("result get city",result)
+
         return callback(null, result);
         })
 
