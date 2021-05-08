@@ -163,21 +163,30 @@ const PreviewUser = {
     getOrderHisto : function(req,callback){
         var body = (typeof req.body != "undefined") ? req.body : req;
         body = cleanQuery(body);
-        res = {
-
-        }
+      var res =[]
+      var array_id_detail = []
         Order.get({num_commande : body.num_commande},function(err,order){
             if(err){ return callback(err,"wrong num_commande")}
             else{
                 order.forEach((el)=>{
-                    res["order"] = el
+                    array_id_detail.find((elm)=>elm==el.id_detail)==undefined ? array_id_detail.push(el.id_detail) : null
+                  var a  = {
+                      order : el,
+                      
+                  }
+                  res.push(a)
+                    
                 })
-
-                Detail.getDetail({id : res["order"].id_detail},function(err,detail){
+// change res["order"].id_detail
+console.log(res)
+                Detail.getDetail({id : array_id_detail},function(err,detail){
                     if(err){return callback(err,"wrong num_commande")}
                     else{
+                        console.log(detail)
                         detail.forEach((el)=>{
-                            res["detail"] = el
+                            var idx = res.findIndex((eml)=>eml.order.id_detail==el.id)
+                            console.log(idx,res[idx])
+                            res[idx]["detail"] = el
                         })
 
                         return callback(null,res)
