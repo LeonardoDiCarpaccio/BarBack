@@ -3,3 +3,5 @@ Dockerfile
 node-server
 db.js
 deploy.yaml
+app.yaml
+.gcloudignore
