@@ -184,15 +184,19 @@ const PreviewUser = {
                     
                 })
 // change res["order"].id_detail
-console.log(resp)
+
                 Detail.getDetail({id : array_id_detail},function(err,detail){
                     if(err){return callback(err,"wrong num_commande")}
                     else{
-                        console.log(detail)
+                        
                         detail.forEach((el)=>{
                             var idx = resp.ngFor.findIndex((eml)=>eml.order.id_detail==el.id)
                             resp.ngFor[idx]["detail"] = el
                         })
+                        Users.get({id_user: resp.id_owner}, function(err, user){
+                           resp["owner"] = TableJsonId({}, user, "id")
+                        })
+                        console.log(resp, "resp")
 
                         return callback(null,resp)
                     }

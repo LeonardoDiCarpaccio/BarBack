@@ -47,10 +47,11 @@ var Functions = {
     return table_json;
   },
   TableJsonId: function (table_json, table_array, id_type) {
-
+    console.log("passe pas la")
     table_json = {};
     table_array.forEach((el) => table_json[el[id_type]] = el);
     return table_json;
+
   },
 }
 
