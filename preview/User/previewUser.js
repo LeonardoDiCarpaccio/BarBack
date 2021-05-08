@@ -165,7 +165,8 @@ const PreviewUser = {
         body = cleanQuery(body);
         var resp = {
             ngFor : [],
-            id_owner : []
+            id_owner : [],
+            
         }
   
       var array_id_detail = []
@@ -194,11 +195,15 @@ const PreviewUser = {
                             resp.ngFor[idx]["detail"] = el
                         })
                         Users.get({id_user: resp.id_owner}, function(err, user){
-                           resp["owner"] = TableJsonId({}, user, "id")
-                        })
-                        console.log(resp, "resp")
-
+                       
+                        
+                           
+                           resp["owner"]= TableJsonId({}, user, "id_user")
+                           
                         return callback(null,resp)
+                        })
+                   
+
                     }
                 })
             }

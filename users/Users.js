@@ -10,7 +10,6 @@ var Users = {
    
     var body = (typeof req.body != "undefined") ? req.body : req;
     body = cleanQuery(body);
-    console.log("get users",body)
     let target = (typeof body.only != "undefined") && Array.isArray(body.only) && body.only.length > 0 ? body.only.join(',') : "*"; // 
 
     var where = [];
@@ -25,11 +24,9 @@ var Users = {
 
     (where.length > 0) ? db.query("SELECT " + target + " FROM user WHERE " + where.join(" AND "), function (err, rows) {
       var result = (typeof rows != "undefined") ? Object.values(JSON.parse(JSON.stringify(rows))) : [];
-      console.log("result get user",result)
       return callback(null, result);
     }) : db.query("SELECT " + target + " FROM user ", function (err, rows) {
       var result = (typeof rows != "undefined") ? Object.values(JSON.parse(JSON.stringify(rows))) : [];
-      console.log("result get user",result)
 
 
       return callback(null, result);
