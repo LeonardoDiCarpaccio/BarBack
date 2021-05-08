@@ -163,33 +163,38 @@ const PreviewUser = {
     getOrderHisto : function(req,callback){
         var body = (typeof req.body != "undefined") ? req.body : req;
         body = cleanQuery(body);
-      var res =[]
+        var resp = {
+            ngFor : [],
+            id_owner : []
+        }
+  
       var array_id_detail = []
         Order.get({num_commande : body.num_commande},function(err,order){
             if(err){ return callback(err,"wrong num_commande")}
             else{
                 order.forEach((el)=>{
                     array_id_detail.find((elm)=>elm==el.id_detail)==undefined ? array_id_detail.push(el.id_detail) : null
+                    resp.id_owner.find((elm)=>elm==el.id_owner)==undefined ? resp.id_owner.push(el.id_owner) : null
+
                   var a  = {
                       order : el,
                       
                   }
-                  res.push(a)
+                  resp.ngFor.push(a)
                     
                 })
 // change res["order"].id_detail
-console.log(res)
+console.log(resp)
                 Detail.getDetail({id : array_id_detail},function(err,detail){
                     if(err){return callback(err,"wrong num_commande")}
                     else{
                         console.log(detail)
                         detail.forEach((el)=>{
-                            var idx = res.findIndex((eml)=>eml.order.id_detail==el.id)
-                            console.log(idx,res[idx])
-                            res[idx]["detail"] = el
+                            var idx = resp.ngFor.findIndex((eml)=>eml.order.id_detail==el.id)
+                            resp.ngFor[idx]["detail"] = el
                         })
 
-                        return callback(null,res)
+                        return callback(null,resp)
                     }
                 })
             }
