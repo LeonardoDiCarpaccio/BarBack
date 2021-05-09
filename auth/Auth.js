@@ -94,7 +94,7 @@ var Auth = {
                                     fulldehka.push(response.insertId)
                                     console.log("UPDATE tb_city SET id_owner = "+JSON.stringify(fulldehka)+" WHERE city = '"+ dehka +"'")
                                   return  db.query("UPDATE tb_city SET id_owner = '"+JSON.stringify(fulldehka)+"' WHERE city = '"+ dehka +"'",callback)
-                                }
+                                } 
                                 else{
                                     const tempo = [response.insertId]
                                 
