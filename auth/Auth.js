@@ -66,6 +66,9 @@ var Auth = {
             column.push('birthday')
             values.push(moment(body.birthday).format("YYYY-MM-DD"))
         }
+
+        column.push("id_category")
+        values.push(5)
         db.query("SELECT email FROM user WHERE email ='"+body.email+"'",function(err,user){
             if(user.length>0){
                 callback(err,"User already exist")
@@ -83,20 +86,20 @@ var Auth = {
                             callback(null, "register OK")
                         }
                         else {
-                            const dehka = JSON.parse(body.adresse)
-                            return db.query("SELECT * FROM tb_ville WHERE ville = '" + dehka.ville + "'", function (err, citys) {
+                            const dehka = body.location
+                            console.log("SELECT * FROM tb_city WHERE city = '" + dehka + "'")
+                            return db.query("SELECT * FROM tb_city WHERE city = '" + dehka + "'", function (err, citys) {
+                                console.log(citys)
                                 if(citys.length>0){
                                     const fulldehka = JSON.parse(citys[0].id_owner)
-                                    fulldehka.array.push({id_owner : response.insertId})
-                                    citys[0].id_owner = JSON.stringify(fulldehka) 
-                                    db.query("UPDATE tb_ville SET id_owner = "+JSON.stringify(citys[0].id_owner)+" WHERE ville = '"+ dehka.ville +"'",callback)
+                                    fulldehka.push(response.insertId)
+                                    console.log("UPDATE tb_city SET id_owner = "+JSON.stringify(fulldehka)+" WHERE city = '"+ dehka +"'")
+                                  return  db.query("UPDATE tb_city SET id_owner = '"+JSON.stringify(fulldehka)+"' WHERE city = '"+ dehka +"'",callback)
                                 }
                                 else{
-                                    const tempo = [{id_owner : response.insertId}]
-                                    resElse={
-                                        array : tempo
-                                    }
-                                   db.query("INSERT INTO tb_ville (ville,id_owner) VALUES ('"+dehka.ville+"','"+JSON.stringify(resElse)+"')",callback)
+                                    const tempo = [response.insertId]
+                                
+                                  return db.query("INSERT INTO tb_city (city,id_owner) VALUES ('"+dehka+"','"+JSON.stringify(tempo)+"')",callback)
                                 }
     
     

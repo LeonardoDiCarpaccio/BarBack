@@ -13,6 +13,7 @@ var VerifyToken = require("./VerifyToken");
 router.post("/register",function(req,res){
   Auth.register(req,function(err,row){
     if(err){
+      console.log(err)
      return res.status(404).send("not ok")
     }
     if(row==="User already exist"){
