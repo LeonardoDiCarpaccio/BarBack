@@ -172,7 +172,7 @@ const PreviewUser = {
       var array_id_detail = []
         Order.get({num_commande : body.num_commande},function(err,order){
             if(err){ return callback(err,"wrong num_commande")}
-            else{
+            else{console.log(order)
                 order.forEach((el)=>{
                     array_id_detail.find((elm)=>elm==el.id_detail)==undefined ? array_id_detail.push(el.id_detail) : null
                     resp.id_owner.find((elm)=>elm==el.id_owner)==undefined ? resp.id_owner.push(el.id_owner) : null
