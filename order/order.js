@@ -39,13 +39,15 @@ const Order ={
                         where.push("id_client IN (" + body.id_client.join(",") + ")") :
                         where.push("id_client =" + body.id_client) : null;
                             console.log("SELECT " + target + " FROM tb_order WHERE " + where.join(" AND "));
-        (where.length > 0) ? db.query("SELECT " + target + " FROM tb_order WHERE " + where.join(" AND "), function (err, rows) {
+        (where.length > 0) ? db.query("SELECT " + target + " FROM tb_order WHERE " + where.join(" AND ") +" ORDER BY date DESC", function (err, rows) {
             var result = (typeof rows != "undefined") ? Object.values(JSON.parse(JSON.stringify(rows))) : [];
+            console.log(result)
             return callback(null, result);
         
-        }) : db.query("SELECT " + target + " FROM tb_order ", function (err, rows) {
+        }) : db.query("SELECT " + target + " FROM tb_order ORDER BY date DESC", function (err, rows) {
             var result = (typeof rows != "undefined") ? Object.values(JSON.parse(JSON.stringify(rows))) : [];
-            
+            console.log(result)
+
         return callback(null, result);
         })
 
@@ -102,9 +104,6 @@ typeof body.status != "undefined"
                                   callback
                               );
                
-                   
-    
-
     },
     delete: function (req, callback) {
         var body = typeof req.body != "undefined" ? req.body : req;

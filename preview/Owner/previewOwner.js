@@ -17,7 +17,6 @@ getOrderbyStatus : function(req, callback) {
     body = cleanQuery(body);
     var id_detail_array = []
     Order.get(body, function(err, Order){
-        console.log(Order)
         if(Order.length === 0 || err){
             callback(null, "no Order or worng id provided")
         }
@@ -29,10 +28,15 @@ getOrderbyStatus : function(req, callback) {
                     });
 
                     Detail.getDetail({id : id_detail_array},function(err,detail){
-                        console.log('detail',detail)
                         if(err || detail.length == 0){
                             callback(err,"no detail")
                         }else{
+                            console.log(Order,"order",detail,"detail")
+                            detail.forEach((el)=>{
+                                // console.log(Order[Order.findIndex((l)=>l.id_detail==el.id)].nb_commande)
+
+                                el["num_cmd"] = Order[Order.findIndex((l)=>l.id_detail==el.id)].num_commande
+                            })
                            res['detail']=[...detail]
                             callback(null,res)
                         }

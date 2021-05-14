@@ -1,5 +1,5 @@
 var db = require('../db');
-const { isDef, cleanQuery } = require('../helpers/functions');
+const { isDef, cleanQuery,dateNow } = require('../helpers/functions');
 
 var Detail = {
     getDetail: function (req, callback) {
@@ -15,7 +15,7 @@ var Detail = {
             }
 
             if (table.length > 0)
-                return db.query('SELECT ' + target + ' FROM detail WHERE ' + table.join(" AND "), function(err,detail){
+                return db.query('SELECT ' + target + ' FROM detail WHERE ' + table.join(" AND ") +" ORDER BY date DESC", function(err,detail){
                     var result = (typeof detail != "undefined") ? Object.values(JSON.parse(JSON.stringify(detail))) : [];
                     result.forEach(element => {
                             typeof element.detail != "undefined" ? element.detail = JSON.parse(element.detail) : null
@@ -25,7 +25,7 @@ var Detail = {
                     callback(null,result)
                 });
             else
-                return db.query('SELECT ' + target + ' FROM detail',function(err,detail){
+                return db.query('SELECT ' + target + ' FROM detail ORDER BY date DESC',function(err,detail){
                     var result = (typeof detail != "undefined") ? Object.values(JSON.parse(JSON.stringify(detail))) : [];
                     result.forEach(element => {
                         typeof element.detail != "undefined" ? element.detail = JSON.parse(element.detail) : null
@@ -56,7 +56,10 @@ var Detail = {
                 keys.push(key);
             }
         }
-        console.log(   "INSERT INTO detail,location (" +
+        keys.push("date");
+        values.push("'"+dateNow()+"'");
+      
+        console.log(   "INSERT INTO detail (" +
         keys.join(",") +
         ") VALUES  (" +
         values.join(",") +

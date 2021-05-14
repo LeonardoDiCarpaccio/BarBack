@@ -23,7 +23,7 @@ passerCommande : function(req,callback){
     if(detail_order !==  null || table !== null || id_client != null || id_owner != null){
     
         Detail.insert({detail : detail_order,location : table},function(err,detail){
-            
+            console.log(detail,"detail")
             var nb_commande = detail.insertId.toString() +  Math.trunc(Math.random()*100).toString()
 
             if(err){callback(err,"cant insert detail")}
