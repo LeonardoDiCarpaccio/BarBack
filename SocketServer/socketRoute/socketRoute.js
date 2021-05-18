@@ -255,7 +255,7 @@ getOrderbyStatus : function(req, callback) {
                  });
 
                  Socket.getDetail({id : id_detail_array},function(err,detail){
-                     if(err || detail.length == 0){
+                     if(err || detail==null){
                          callback(err,"no detail")
                      }else{
                          console.log(Order,"order",detail,"detail")
