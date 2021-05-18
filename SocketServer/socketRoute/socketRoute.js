@@ -244,7 +244,7 @@ getOrderbyStatus : function(req, callback) {
  var id_detail_array = []
 
  Socket.getOrder(body, function(err, Order){
-     if(Order.length === 0 || err){
+     if(Order ==null || err){
          callback(null, "no Order or worng id provided")
      }
      else{

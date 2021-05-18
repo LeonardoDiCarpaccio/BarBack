@@ -9,6 +9,21 @@ const io = require("socket.io")(server, {
     }
   });
 
+  var cors = require('cors');
+  
+  var corsOptions = {
+    origin: '*',
+    optionsSuccessStatus: 200 // some legacy browsers (IE11, various SmartTVs) choke on 204 
+  }
+  app.use(cors(corsOptions));app.use(function(req, res, next) {
+    res.setHeader('Access-Control-Allow-Origin', '*');
+  
+    res.setHeader('Access-Control-Allow-Methods', 'GET, POST, OPTIONS, PUT, PATCH, DELETE');
+  
+    res.setHeader('Access-Control-Allow-Headers', 'X-Requested-With,content-type');
+  
+  next();
+  });
 
 io.on('connection', (socket) => {
     console.log("socket connected "),
