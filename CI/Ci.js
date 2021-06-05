@@ -14,7 +14,7 @@ const Category = {
             
                 shell.exec('cd .. & npm i & sudo pm2 restart server.js', function(code, output) {
                    return callback(null,output)
-                  })
+                  });
             
        
         });
