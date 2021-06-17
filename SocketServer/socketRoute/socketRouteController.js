@@ -23,7 +23,8 @@ router.post("/", function(req, res){
  res.status(400).json(err)        }
         else{
             res.json(rows)
-            console.log('socket get info route')
+            
+            
         }
     })
 })
