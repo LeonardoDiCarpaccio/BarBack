@@ -61,6 +61,8 @@ typeof body.status != "undefined"
                           );
            
 },
+
+
 getOrder: function (req, callback) {
     var body = (typeof req.body != "undefined") ? req.body : req;
     body = cleanQuery(body);
