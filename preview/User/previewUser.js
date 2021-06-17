@@ -6,7 +6,7 @@ var db = require("../../db");
 const { dateNow, cleanQuery, TableJsonId, TableJsonIdSpecificKey, isDef, isDefArray } = require("../../helpers/functions");
 const Users = require("../../users/Users");
 const Order = require("../../order/order");
-const Detail = require("../../detail/detail")
+const Detail = require("../../detail/detail");
 
 const PreviewUser = {
 
