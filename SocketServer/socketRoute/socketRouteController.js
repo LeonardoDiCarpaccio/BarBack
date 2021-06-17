@@ -12,7 +12,7 @@ router.post("/update", function(req, res){
  res.status(400).json(err)        }
         else{
             res.json(rows)
-            console.log('')
+        
         }
     })
 })
@@ -24,7 +24,7 @@ router.post("/", function(req, res){
         else{
             res.json(rows)
             
-            
+
         }
     })
 })
