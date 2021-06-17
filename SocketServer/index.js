@@ -9,6 +9,21 @@ const io = require("socket.io")(server, {
     }
   });
 
+  var cors = require('cors');
+  
+  var corsOptions = {
+    origin: '*',
+    optionsSuccessStatus: 200 // some legacy browsers (IE11, various SmartTVs) choke on 204 
+  }
+  app.use(cors(corsOptions));app.use(function(req, res, next) {
+    res.setHeader('Access-Control-Allow-Origin', '*');
+  
+    res.setHeader('Access-Control-Allow-Methods', 'GET, POST, OPTIONS, PUT, PATCH, DELETE');
+  
+    res.setHeader('Access-Control-Allow-Headers', 'X-Requested-With,content-type');
+  
+  next();
+  });
 
 io.on('connection', (socket) => {
     socket.on('orderIdDetail', (orderIdDetail) => {
@@ -41,5 +56,5 @@ io.on('connection', (socket) => {
 var port = process.env.PORT || 3001;
 
 server.listen(port, function(){
-   console.log('listening in http://localhost:' + port);
+   console.log('listening in http://localhost:' + port)
 });

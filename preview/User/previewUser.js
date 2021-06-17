@@ -20,7 +20,7 @@ const PreviewUser = {
             body.city.length > 0
         ) {
 
-            where.push("city LIKE '" + body.city + "%'");
+            where.push("city LIKE '%" + body.city + "%'");
 
         }
         db.query("SELECT city FROM tb_city WHERE " + where, function (err, rows) {

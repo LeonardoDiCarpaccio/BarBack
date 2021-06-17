@@ -5,9 +5,11 @@ const PreviewUser = require("./User/previewUser");
 const PreviewOwner = require("./Owner/previewOwner");
 router.use(bodyParser.urlencoded({ extended: false }));
 router.use(bodyParser.json());
+var VerifyToken = require("../auth/VerifyToken");
 
 
-router.post("/getCityFiltered", function(req, res){
+
+router.post("/getCityFiltered",VerifyToken, function(req, res){
     PreviewUser.getCityFiltered(req,function(err , rows){
         if(err){
             res.status(400).json("bug chelou");        }

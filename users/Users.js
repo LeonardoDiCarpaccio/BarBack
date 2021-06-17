@@ -7,9 +7,9 @@ var Users = {
 
 
   get: function (req, callback) {
-   
     var body = (typeof req.body != "undefined") ? req.body : req;
     body = cleanQuery(body);
+
     let target = (typeof body.only != "undefined") && Array.isArray(body.only) && body.only.length > 0 ? body.only.join(',') : "*"; // 
 
     var where = [];
@@ -26,6 +26,7 @@ var Users = {
       var result = (typeof rows != "undefined") ? Object.values(JSON.parse(JSON.stringify(rows))) : [];
       return callback(null, result);
     }) : db.query("SELECT " + target + " FROM user ", function (err, rows) {
+
       var result = (typeof rows != "undefined") ? Object.values(JSON.parse(JSON.stringify(rows))) : [];
 
 
