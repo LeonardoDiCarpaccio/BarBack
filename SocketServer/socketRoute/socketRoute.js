@@ -106,7 +106,7 @@ getOrder: function (req, callback) {
     
     }) : db.query("SELECT " + target + " FROM tb_order ORDER BY date DESC", function (err, rows) {
         var result = (typeof rows != "undefined") ? Object.values(JSON.parse(JSON.stringify(rows))) : [];
-        console.log(result)
+        // console.log(result)
 
     return callback(null, result);
     })
