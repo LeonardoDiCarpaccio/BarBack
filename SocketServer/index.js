@@ -37,7 +37,7 @@ io.on('connection', (socket) => {
         // console.log("orderOwnerid from front", data)
 
         Socket.getOrderbyStatus(data, function(err,detail){
-            console.log(detail, "getOrderByStatusOwner ")
+            // console.log(detail, "getOrderByStatusOwner ")
             io.emit('orders-changed', detail);    
         })
       })
