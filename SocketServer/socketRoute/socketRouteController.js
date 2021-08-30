@@ -35,7 +35,7 @@ router.post("/getOrderbyStatus", function(req, res){
     }
         else{
             res.json(rows)
-            // console.log('socket get info route')
+             console.log('socket get info route')
         }
     })
 })

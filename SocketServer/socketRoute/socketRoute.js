@@ -68,7 +68,7 @@ getOrder: function (req, callback) {
     body = cleanQuery(body);
 
     let target = (typeof body.only != "undefined") && Array.isArray(body.only) && body.only.length > 0 ? body.only.join(',') : "*"; // 
-
+    var dandelot = null;
     var where = [];
     // body : {"dateadded_inf" :"2020"}
 
