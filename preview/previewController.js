@@ -12,7 +12,7 @@ var VerifyToken = require("../auth/VerifyToken");
 router.post("/getCityFiltered",VerifyToken, function(req, res){
     PreviewUser.getCityFiltered(req,function(err , rows){
         if(err){
-            res.status(400).json("bug chelou");        }
+            res.status(400).json("bug chelou")      }
         else{
             res.json(rows)
             console.log('getTown done')
