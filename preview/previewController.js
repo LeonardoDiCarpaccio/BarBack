@@ -29,7 +29,7 @@ router.post("/previewOwnerListByCity", function(req, res){
             res.json(rows)
             console.log('getTown done')
         }
-    });
+    })
 })
 
 router.post("/getMenuByOwner", function(req, res){
