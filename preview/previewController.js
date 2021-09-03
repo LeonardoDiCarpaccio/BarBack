@@ -14,7 +14,7 @@ router.post("/getCityFiltered", function(req, res){
         if(err){
             res.status(400).json("bug chelou")      }
         else{
-            res.json(rows)
+            // res.json(rows)
             console.log('getTown done')
         }
     })
