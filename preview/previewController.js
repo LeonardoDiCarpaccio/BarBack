@@ -18,7 +18,7 @@ router.post("/getCityFiltered",VerifyToken, function(req, res){
             console.log('getTown done')
         }
     })
-});
+})
 
 router.post("/previewOwnerListByCity", function(req, res){
     PreviewUser.previewOwnerListByTown(req,function(err , rows){
@@ -30,7 +30,7 @@ router.post("/previewOwnerListByCity", function(req, res){
             console.log('getTown done')
         }
     });
-});
+})
 
 router.post("/getMenuByOwner", function(req, res){
     PreviewUser.getCarteByOwner(req, function (err, rows){
