@@ -17,7 +17,7 @@ router.post("/getCityFiltered",VerifyToken, function(req, res){
             res.json(rows)
             console.log('getTown done')
         }
-    });
+    })
 });
 
 router.post("/previewOwnerListByCity", function(req, res){
